@@ -620,7 +620,7 @@ func LoadConfig(cfile string) *AppConfig {
 	setEnvValue("TOUGHRADIUS_LOGGER_MODE", &cfg.Logger.Mode)
 	setEnvBoolValue("TOUGHRADIUS_LOGGER_FILE_ENABLE", &cfg.Logger.FileEnable)
 
-	// Create runtime dirs only after env overrides, so TOUGHRADIUS_SYSTEM_WORKER_DIR is honoured.
+	// Create runtime dirs only after env overrides, so TOUGHRADIUS_SYSTEM_WORKER_DIR is honored.
 	cfg.initDirs()
 
 	return cfg
