@@ -1,284 +1,195 @@
 # Radius Based Network Authentication Simulator
 
-A RADIUS (Remote Authentication Dial-In User Service) server and client toolkit for
-simulating network authentication, authorization and accounting (AAA) — the flow a
-Wi-Fi access point, VPN gateway or 802.1X switch performs against a RADIUS server.
+**Developed by:** Kushagra Sachdeva
 
-It ships a full RADIUS server (RFC 2865/2866), EAP / 802.1X methods (EAP-TLS, PEAP,
-TTLS, MSCHAPv2, MD5), RadSec (RADIUS over TLS), a web admin console, and `radtest`,
-a command-line client that plays the role of a Network Access Server (NAS) so you can
-simulate login, accounting start/stop and full session flows.
+A web-based simulator for **RADIUS** (Remote Authentication Dial-In User Service), the
+protocol that Wi-Fi access points, VPN gateways and 802.1X switches use to check a
+user's credentials, authorize their session and record their usage (AAA:
+Authentication, Authorization, Accounting).
 
-Runs on **Linux and macOS** (Apple Silicon and Intel). Pure Go, no CGO, embedded SQLite.
+The project runs a complete RADIUS server and adds a **built-in NAS simulator**: from the
+browser you act as a network device, send real RADIUS packets to the server, and see
+every attribute on the wire together with the server's decision.
 
-> Based on the open-source [ToughRADIUS](https://github.com/talkincode/toughradius)
-> project (MIT License). Internal identifiers such as the `TOUGHRADIUS_*` environment
-> variables and the `toughradius.yml` config filename are kept for compatibility.
+![Simulator page](docs/screenshots/simulator.png)
 
-## 🍎 macOS Quick Start
+---
 
-```bash
-# Prerequisites (Homebrew)
-brew install go node
+## 1. Abstract
 
-git clone https://github.com/Helixo613/radius-based-network-authentication-simulator.git
-cd radius-based-network-authentication-simulator
+Network access control in campuses, enterprises and ISPs is built on RADIUS, but the
+protocol is hard to observe: the client is a piece of network hardware and the exchange
+happens in binary UDP packets. This project provides a self-contained environment in
+which RADIUS can be studied end to end. A RADIUS server (RFC 2865/2866) stores users,
+billing profiles and network devices in a database; a simulator plays the role of the
+Network Access Server (NAS) and drives authentication and accounting exchanges; and a web
+console shows the resulting sessions, accounting records and statistics. It runs on
+Linux and macOS with no external services, using an embedded SQLite database.
 
-# Build frontend + macOS binaries (arm64 + amd64, universal if lipo is present)
-make build-macos
+## 2. Objectives
 
-# Run the server (Apple Silicon; use -darwin-amd64 on Intel Macs)
-./release/radius-simulator-darwin-arm64
+1. Implement the RADIUS authentication and accounting flow between a NAS and a server.
+2. Let a user simulate device logins without real network hardware.
+3. Visualize each packet exchange: request attributes, response code, reply attributes
+   and round-trip time.
+4. Manage users, billing profiles (bandwidth, session limits, address pools) and NAS devices
+   from a web console.
+5. Track online sessions and accounting records produced by the simulations.
+6. Run on both Linux and macOS (Apple Silicon and Intel).
+
+## 3. Features
+
+- **RADIUS server**: Access-Request / Accept / Reject (RFC 2865), Accounting Start /
+  Interim-Update / Stop (RFC 2866), Change of Authorization and Disconnect (RFC 5176).
+- **NAS simulator page** with three modes:
+  - *Authenticate*: one Access-Request.
+  - *Log in*: authenticate and start accounting, so the user appears in Online Sessions.
+  - *Full session*: authenticate, start, interim update and stop.
+- **802.1X / EAP**: EAP-MD5, EAP-MSCHAPv2, EAP-TLS, PEAP, EAP-TTLS.
+- **RadSec**: RADIUS over TLS (RFC 6614).
+- **Web console**: dashboard, users, billing profiles, NAS devices, network nodes, online
+  sessions, accounting logs, operators and system settings.
+- **Command-line client** `radtest` for scripted tests.
+- **Demo data** generator so the system can be explored immediately.
+
+## 4. System Architecture
+
+```mermaid
+flowchart LR
+    U[User / Browser] -->|HTTP :1816| W[Web console<br/>React + MUI]
+    W -->|REST API| A[Admin API<br/>Go + Echo]
+    A -->|Simulator| S[NAS simulator]
+    S -->|Access-Request<br/>UDP :1812| R[RADIUS server]
+    S -->|Accounting-Request<br/>UDP :1813| R
+    T[radtest CLI] -->|UDP| R
+    R --> D[(SQLite / PostgreSQL)]
+    A --> D
 ```
 
-- Data directory on macOS defaults to `~/.radius-simulator` (Linux: `/var/toughradius`).
-  Override with `system.workdir` in `toughradius.yml` or `TOUGHRADIUS_SYSTEM_WORKER_DIR`.
-- Timezone follows the system clock (`system.location: Local`).
-- Ports 1812/1813 (UDP), 2083 (RadSec) and 1816 (web) are unprivileged — no `sudo` needed.
-  macOS may ask once to allow incoming connections; click **Allow**.
-- Admin login: user `admin`, password in `~/.radius-simulator/private/admin-bootstrap-password`.
-- Unsigned binaries downloaded from the internet may be quarantined by Gatekeeper; clear with
-  `xattr -d com.apple.quarantine ./release/radius-simulator-darwin-*`.
+**Authentication flow (one simulation run):**
 
-### Simulate a client login
-
-1. Load demo data (users `demo-alice`, `demo-bob`, ... with password `123456`, plus a
-   local NAS `127.0.0.1` / secret `testing123`). Stop the server first, then:
-
-```bash
-go run ./cmd/demo-seed
+```mermaid
+sequenceDiagram
+    participant NAS as NAS (simulated)
+    participant R as RADIUS server
+    participant DB as Database
+    NAS->>R: Access-Request (User-Name, User-Password, NAS-Identifier)
+    R->>DB: look up NAS (shared secret), user, billing profile
+    R-->>NAS: Access-Accept (Framed-IP, Session-Timeout) or Access-Reject
+    NAS->>R: Accounting-Request (Start)
+    R->>DB: create online session
+    R-->>NAS: Accounting-Response
+    NAS->>R: Accounting-Request (Stop)
+    R->>DB: close session, write accounting record
+    R-->>NAS: Accounting-Response
 ```
 
-2. Start the server again and send requests as the simulated NAS:
+## 5. Technology Stack
 
-```bash
-./release/radtest-darwin-arm64 auth -server 127.0.0.1 -secret testing123 -username demo-alice -password 123456   # Access-Accept
-./release/radtest-darwin-arm64 auth -server 127.0.0.1 -secret testing123 -username demo-alice -password wrong    # Access-Reject
-./release/radtest-darwin-arm64 flow -server 127.0.0.1 -secret testing123 -username demo-alice -password 123456
-```
+| Layer | Technology |
+| --- | --- |
+| RADIUS server and API | Go 1.26, Echo, GORM, layeh/radius |
+| Database | SQLite (embedded, default) or PostgreSQL |
+| Web console | React 19, TypeScript, React Admin, Material UI, ECharts |
+| Build | Make, Vite |
+| Testing | Go `testing` + testify, GitHub Actions (Linux and macOS) |
 
-`flow` runs Access-Request, Accounting-Start and Accounting-Stop, simulating a full session.
+## 6. Modules
 
-## ✨ Core Features
-
-### RADIUS Protocol Support
-
-- 🔐 **Standard RADIUS** - Full support for RFC 2865/2866 authentication and accounting protocols
-- 🔒 **RadSec** - TLS encrypted RADIUS over TCP (RFC 6614)
-- 🌐 **Multi-Vendor Support** - Compatible with major network devices like Cisco, Mikrotik, Huawei, etc.
-- ⚡ **High Performance** - Built with Go, supporting high concurrency processing
-
-### EAP / 802.1X Authentication
-
-A pluggable EAP handler registry covers both challenge and tunneled methods:
-
-- 🪪 **EAP-MD5 / EAP-MSCHAPv2** - Challenge-based password methods (RFC 3748)
-- 🔐 **EAP-TLS** - Certificate-based mutual authentication with TLS handshake, fragmentation reassembly, and certificate-to-identity mapping (RFC 5216)
-- 🪟 **PEAPv0 / EAP-MSCHAPv2** - Server-certificate TLS tunnel carrying inner EAP-MSCHAPv2 with MPPE key derivation, for Windows / AD / legacy enterprise networks
-- 🧩 **EAP-TTLS** - TLS tunnel carrying inner PAP / MS-CHAPv2, onboarding LDAP and legacy credential stores without a per-client certificate rollout (RFC 5281)
-
-> ⚠️ **Compatibility note:** PEAP and EAP-MSCHAPv2 are *compatibility-first* methods. MS-CHAPv2-style exchanges carry an NTLMv1-like attack surface (see Microsoft guidance). Use them to serve legacy devices and AD users; prefer **EAP-TLS** for new deployments where you control the client certificate estate.
-
-### Management Features
-
-- 📊 **React Admin Interface** - Modern Web management dashboard
-- 👥 **User Management** - Complete user account and profile management
-- 📈 **Real-time Monitoring** - Online session monitoring and accounting record queries
-- 🔍 **Log Auditing** - Detailed authentication and accounting logs
-
-### Integration Capabilities
-
-- **Multi-Database Support** - PostgreSQL, SQLite
-- 🔌 **Flexible Extension** - Supports custom authentication and accounting logic
-- 📡 **Multi-Vendor VSA** - Huawei, Mikrotik, Cisco, H3C, etc.
-
-## 🚀 Quick Start
-
-### Prerequisites
-
-- Go 1.25+ (for building from source)
-- PostgreSQL or SQLite
-- Node.js 18+ (for frontend development)
-
-### Installation
-
-#### 1. Build from Source
-
-```bash
-# Clone repository
-git clone https://github.com/Helixo613/radius-based-network-authentication-simulator.git
-cd radius-based-network-authentication-simulator
-
-# Build frontend
-cd web
-npm install
-npm run build
-cd ..
-
-# Build backend
-go build -o toughradius main.go
-```
-
-### Configuration
-
-1. Copy the configuration template:
-
-```bash
-cp toughradius.yml toughradius.prod.yml
-```
-
-2. Edit `toughradius.prod.yml` configuration file:
-
-```yaml
-system:
-  appid: RadiusAuthSimulator
-  location: Local
-  workdir: ./rundata
-
-database:
-  type: sqlite # or postgres
-  name: toughradius.db
-  # PostgreSQL configuration
-  # host: localhost
-  # port: 5432
-  # user: toughradius
-  # passwd: your_password
-
-radiusd:
-  enabled: true
-  host: 0.0.0.0
-  auth_port: 1812 # RADIUS authentication port
-  acct_port: 1813 # RADIUS accounting port
-  radsec_port: 2083 # RadSec port
-
-web:
-  host: 0.0.0.0
-  port: 1816 # Web management interface port
-```
-
-### EAP Configuration
-
-ToughRADIUS registers the following EAP handlers out of the box:
-
-| Method | Kind | Notes |
+| Module | Path | Purpose |
 | --- | --- | --- |
-| `eap-md5` | Challenge | Default; password challenge (RFC 3748) |
-| `eap-mschapv2` | Challenge | MS-CHAPv2 password challenge |
-| `eap-tls` | Tunneled (certificate) | Certificate-based mutual authentication (RFC 5216) |
-| `eap-peap` | Tunneled | PEAPv0 with inner EAP-MSCHAPv2 (Windows / AD) |
-| `eap-ttls` | Tunneled | Inner PAP / MS-CHAPv2 (RFC 5281) |
+| RADIUS service | `internal/radiusd/` | Auth/acct packet handling, EAP, RadSec, vendor attributes |
+| Admin API | `internal/adminapi/` | REST endpoints for the console, including `simulator.go` |
+| Domain models | `internal/domain/` | Users, profiles, NAS devices, sessions, accounting |
+| Web console | `web/src/` | React pages; the simulator is `pages/SimulatorPage.tsx` |
+| CLI tools | `cmd/radtest`, `cmd/demo-seed` | Command-line RADIUS client, demo data generator |
+| Configuration | `config/` | YAML and environment configuration, per-OS defaults |
 
-Fine-tune authentication behavior via system configuration (`sys_config`):
+## 7. Getting Started
 
-- `radius.EapMethod`: Preferred EAP method offered on EAP-Identity (default `eap-md5`).
-- `radius.EapEnabledHandlers`: Allow-list of enabled handlers, comma-separated, e.g. `eap-md5,eap-mschapv2,eap-tls`. Use `*` to enable all registered handlers.
+### Requirements
 
-This lets you disable unauthorized EAP methods without interrupting the service.
+- Go 1.26+ and Node.js 18+
+- macOS: `brew install go node`
 
-> ⚠️ MS-CHAPv2-based methods (`eap-mschapv2`, `eap-peap`, and TTLS inner MS-CHAPv2) are compatibility-oriented and carry an NTLMv1-like attack surface. Prefer `eap-tls` for new deployments where you control client certificates.
-
-### Running
-
-```bash
-# Initialize database
-./toughradius -initdb -c toughradius.prod.yml
-
-# Start service
-./toughradius -c toughradius.prod.yml
-```
-
-Access Web Management Interface: <http://localhost:1816>
-
-Bootstrap Admin Account:
-
-- Username: `admin`
-- Password: generated on first start and written to `{workdir}/private/admin-bootstrap-password` (mode 0600). It is never `toughradius`.
-
-Set `TOUGHRADIUS_ADMIN_PASSWORD` before the first start if you want to choose the initial password yourself. Lost passwords can be reset with `cmd/reset-password`. Upgrades that still have the historical default password rotate it automatically and log the replacement once.
-
-For any deployment exposed beyond a local development host, also set `web.secret` / `TOUGHRADIUS_WEB_SECRET` to a long random value before starting the service; it signs management API JWTs.
-Production mode (`system.debug=false` or `logger.mode=production`) refuses to start when the built-in placeholder or an empty JWT secret is still configured.
-
-## 📖 Documentation
-
-- 📚 **[Bilingual Handbook (mdbook)](https://www.toughradius.net/)** - CN/EN documentation site (source in [`docs-site/`](docs-site/)) consolidating the overview, security policy, RFC reference, and more; built, link-checked, and deployed to GitHub Pages by CI
-- [Roadmap](docs/roadmap.md) - Milestones and the EAP suite delivery plan (EAP-TLS / PEAP / TTLS, with TLS 1.3, TEAP, EAP-PWD tracked)
-- [Feature Checklist](docs/feature-checklist.md) - Product scope baseline for aligning future development with feature IDs and avoiding uncontrolled direction changes
-- [Overview](docs-site/src/en/overview.md) / [Concepts & Terminology](docs-site/src/en/concepts.md) - Current architecture, service model, and AAA concepts
-- [Admin UI Manual](docs-site/src/en/admin-manual.md) - React Admin management interface, pages, roles, and workflows
-- [Operations Guide](docs-site/src/en/ops-guide.md) - Production configuration, environment variables, SQLite/PostgreSQL storage, backup, and runtime operations
-- [Documentation Map](docs-site/src/en/documentation-map.md) - Canonical map for handbook chapters and repository documents
-
-## 🏗️ Project Structure
-
-```text
-toughradius/
-├── cmd/             # Application entry points
-├── internal/        # Private application code
-│   ├── adminapi/   # Admin API (New version)
-│   ├── radiusd/    # RADIUS service core
-│   ├── domain/     # Data models
-│   └── webserver/  # Web server
-├── pkg/            # Public libraries
-├── web/            # React Admin frontend
-└── docs/           # Documentation
-```
-
-## 🔧 Development
-
-### Backend Development
+### Linux / WSL
 
 ```bash
-# Run tests
-go test ./...
+git clone https://github.com/Helixo613/radius-based-network-authentication-simulator.git
+cd radius-based-network-authentication-simulator
+export TOUGHRADIUS_SYSTEM_WORKER_DIR=$HOME/.radius-simulator   # data folder
 
-# Run benchmark tests
-go test -bench=. ./internal/radiusd/
-
-# Start development mode
-go run main.go -c toughradius.yml
+make buildf                 # build the web console (first time only)
+go run ./cmd/demo-seed      # load demo users and devices (first time only)
+go run .                    # start the server
 ```
 
-### Frontend Development
+### macOS
 
 ```bash
-cd web
-npm install
-npm run dev       # Development server
-npm run build     # Production build
-npm run lint      # Code linting
+git clone https://github.com/Helixo613/radius-based-network-authentication-simulator.git
+cd radius-based-network-authentication-simulator
+make build-macos            # builds the console and macOS binaries
+go run ./cmd/demo-seed
+./release/radius-simulator-darwin-arm64     # Intel Macs: -darwin-amd64
 ```
 
-## 🤝 Contribution
+On macOS the data folder defaults to `~/.radius-simulator`. If Gatekeeper blocks a downloaded
+binary, run `xattr -d com.apple.quarantine ./release/radius-simulator-darwin-*`.
 
-We welcome contributions in various forms, including but not limited to:
+### Using it
 
-- 🐛 Submitting Bug reports and feature requests
-- 📝 Improving documentation
-- 💻 Submitting code patches and new features
-- 🌍 Helping with translation
+1. Open <http://localhost:1816> and sign in as `admin`. The password is in
+   `~/.radius-simulator/private/admin-bootstrap-password`.
+2. Open **Simulator**, choose a NAS device, enter `demo-alice` / `123456`, pick a mode and
+   click **Run simulation**.
+3. Check **Online Sessions** and **Accounting Logs** to see the effect.
 
-## 📜 License
+Demo users: `demo-alice`, `demo-bob`, `demo-carol`, `demo-eve`, `demo-frank` (password
+`123456`); `demo-dave` is disabled and is rejected.
 
-This project is licensed under the [MIT License](LICENSE).
+From a terminal, the same flow can be run with the CLI client:
 
-### Third-Party Resources
+```bash
+go run ./cmd/radtest flow -server 127.0.0.1 -secret testing123 -username demo-alice -password 123456
+```
 
-The RADIUS dictionary files in the `share/` directory are derived from the [FreeRADIUS](https://freeradius.org/) project and are licensed under the [Creative Commons Attribution 4.0 International License (CC BY 4.0)](share/LICENSE).
+## 8. Testing
 
-## 🔗 Related Links
+```bash
+go test ./...                                   # all backend tests
+go test ./internal/adminapi/ -run Simulator -v  # simulator tests
+cd web && npx tsc --noEmit                      # web console type check
+```
 
-- [Official Website](https://www.toughradius.net/)
-- [Online Documentation](https://github.com/talkincode/toughradius/wiki)
-- [RadSec RFC 6614](https://tools.ietf.org/html/rfc6614)
-- [RADIUS RFC 2865](https://tools.ietf.org/html/rfc2865)
-- [EAP RFC 3748](https://tools.ietf.org/html/rfc3748)
-- [EAP-TLS RFC 5216](https://tools.ietf.org/html/rfc5216)
-- [EAP-TTLS RFC 5281](https://tools.ietf.org/html/rfc5281)
-- [Mikrotik RADIUS Configuration](https://wiki.mikrotik.com/wiki/Manual:RADIUS_Client)
+The simulator tests start a fake RADIUS server and check that every mode sends correctly
+signed packets in the right order, stops after a rejection, and validates its input.
+GitHub Actions runs the test suite on both Linux and macOS for every push.
 
-## 💎 Sponsors
+## 9. Screenshots
 
-Thanks to [JetBrains](https://jb.gg/OpenSourceSupport) for supporting this project!
+| Login | Dashboard |
+| --- | --- |
+| ![Login](docs/screenshots/login.png) | ![Dashboard](docs/screenshots/dashboard.png) |
 
-![JetBrains Logo](https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.svg)
+## 10. Future Scope
+
+- Load testing mode: run many simulated users concurrently and chart throughput.
+- EAP simulation (PEAP, EAP-TLS) from the simulator page.
+- Export a simulation as a packet capture (pcap) for Wireshark.
+
+## 11. Acknowledgements
+
+This project is built on the open-source [ToughRADIUS](https://github.com/talkincode/toughradius)
+RADIUS server (MIT License), which provides the RADIUS server core and the base of the web
+console. The work in this repository adds the NAS simulator (backend and web page), the
+English-only interface, international phone validation, macOS support and the redesigned
+interface. Internal identifiers such as the `TOUGHRADIUS_*` environment variables and the
+`toughradius.yml` config filename are kept from the original for compatibility.
+
+The RADIUS dictionary files in `share/` come from [FreeRADIUS](https://freeradius.org/)
+(CC BY 4.0, see `share/LICENSE`).
+
+## 12. License
+
+[MIT License](LICENSE).

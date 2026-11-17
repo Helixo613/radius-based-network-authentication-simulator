@@ -8,11 +8,13 @@ import RouterOutlinedIcon from '@mui/icons-material/RouterOutlined';
 import AccountTreeOutlinedIcon from '@mui/icons-material/AccountTreeOutlined';
 import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
 import VerifiedUserOutlinedIcon from '@mui/icons-material/VerifiedUserOutlined';
+import ScienceOutlinedIcon from '@mui/icons-material/ScienceOutlined';
 import { Box, useTheme } from '@mui/material';
 import { MenuItemLink, MenuProps, useGetIdentity, useTranslate } from 'react-admin';
 
 const menuItems = [
   { to: '/', labelKey: 'menu.dashboard', icon: <DashboardOutlinedIcon /> },
+  { to: '/simulator', labelKey: 'menu.simulator', icon: <ScienceOutlinedIcon />, permissions: ['super', 'admin'] },
   { to: '/network/nodes', labelKey: 'menu.network_nodes', icon: <AccountTreeOutlinedIcon /> },
   { to: '/network/nas', labelKey: 'menu.nas_devices', icon: <RouterOutlinedIcon /> },
   { to: '/radius/users', labelKey: 'menu.radius_users', icon: <PeopleAltOutlinedIcon /> },
@@ -45,7 +47,7 @@ export const CustomMenu = ({ dense, onMenuClick, logout }: MenuProps) => {
         display: 'flex',
         flexDirection: 'column',
         // Sidebar background depends on theme
-        backgroundColor: isDark ? '#1e293b' : '#1e40af',
+        backgroundColor: isDark ? '#1e293b' : '#115e59',
         color: '#ffffff',
         pt: 0,
         transition: 'background-color 0.3s ease',
@@ -71,12 +73,16 @@ export const CustomMenu = ({ dense, onMenuClick, logout }: MenuProps) => {
           px: 2,
           py: 3,
           fontSize: 12,
+          whiteSpace: 'normal',
+          overflowWrap: 'anywhere',
           color: 'rgba(255, 255, 255, 0.6)',
           transition: 'all 0.3s ease',
         }}
       >
-        <div style={{ fontWeight: 600, marginBottom: 4 }}>Radius Based Network Authentication Simulator</div>
-        <div>© {currentYear} ALL RIGHTS RESERVED</div>
+        <div style={{ fontWeight: 600, marginBottom: 4 }}>RADIUS Auth Simulator</div>
+        <div>Developed by</div>
+        <div style={{ fontWeight: 600 }}>Kushagra Sachdeva</div>
+        <div>{currentYear}</div>
         {logout && <Box sx={{ mt: 2 }}>{logout}</Box>}
       </Box>
     </Box>

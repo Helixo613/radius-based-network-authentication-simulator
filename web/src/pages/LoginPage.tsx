@@ -49,23 +49,49 @@ export const LoginPage = () => {
     <Box
       sx={{
         display: 'flex',
-        flexDirection: 'column',
         minHeight: '100vh',
         alignItems: 'center',
         justifyContent: 'center',
-        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        p: 2,
+        background: 'radial-gradient(circle at 20% 20%, #134e4a 0%, #0f172a 70%)',
       }}
     >
-      <Card sx={{ minWidth: 400, maxWidth: 500, borderRadius: 2, boxShadow: 3 }}>
-        <CardContent sx={{ p: 4 }}>
-          <Box sx={{ mb: 4, textAlign: 'center' }}>
-            <Typography variant="h4" sx={{ fontWeight: 700, color: '#1e40af', mb: 1 }}>
-              {translate('app.title')}
-            </Typography>
-            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-              {translate('app.subtitle')}
-            </Typography>
+      <Card sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, maxWidth: 920, width: '100%', borderRadius: 3, boxShadow: 6, overflow: 'hidden' }}>
+        <Box
+          sx={{
+            flex: 1,
+            p: { xs: 4, md: 5 },
+            color: '#f0fdfa',
+            background: 'linear-gradient(160deg, #0f766e 0%, #134e4a 100%)',
+            display: 'flex',
+            flexDirection: 'column',
+          }}
+        >
+          <Box component="img" src="/admin/logo.svg" alt="" sx={{ width: 56, height: 56, mb: 2 }} />
+          <Typography variant="h5" sx={{ fontWeight: 700, lineHeight: 1.25, mb: 1 }}>
+            {translate('app.title')}
+          </Typography>
+          <Typography variant="body2" sx={{ opacity: 0.85, mb: 3 }}>
+            {translate('app.subtitle')}
+          </Typography>
+          <Box component="ul" sx={{ pl: 2.5, m: 0, '& li': { mb: 1, fontSize: 14, opacity: 0.9 } }}>
+            <li>RADIUS server: authentication (RFC 2865) and accounting (RFC 2866)</li>
+            <li>Built-in NAS simulator: send real RADIUS packets from the browser</li>
+            <li>802.1X / EAP methods, RadSec, live sessions and accounting logs</li>
           </Box>
+          <Box sx={{ flexGrow: 1 }} />
+          <Typography variant="caption" sx={{ mt: 4, opacity: 0.8 }}>
+            Developed by <strong>Kushagra Sachdeva</strong> · {new Date().getFullYear()}
+          </Typography>
+        </Box>
+
+        <CardContent sx={{ flex: 1, p: { xs: 4, md: 5 }, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+          <Typography variant="h5" sx={{ fontWeight: 700, mb: 0.5 }}>
+            {translate('auth.welcome')}
+          </Typography>
+          <Typography variant="body2" sx={{ color: 'text.secondary', mb: 4 }}>
+            Sign in to the admin console
+          </Typography>
 
           <form onSubmit={handleSubmit}>
             <Box sx={{ mb: 3 }}>
@@ -124,9 +150,9 @@ export const LoginPage = () => {
               sx={{
                 mt: 2,
                 py: 1.5,
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                background: 'linear-gradient(135deg, #0f766e 0%, #115e59 100%)',
                 '&:hover': {
-                  background: 'linear-gradient(135deg, #5568d3 0%, #6a4291 100%)',
+                  background: 'linear-gradient(135deg, #115e59 0%, #134e4a 100%)',
                 },
               }}
             >
@@ -137,12 +163,6 @@ export const LoginPage = () => {
               )}
             </Button>
           </form>
-
-          <Box sx={{ mt: 3, textAlign: 'center' }}>
-            <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-              Radius Based Network Authentication Simulator © {new Date().getFullYear()}
-            </Typography>
-          </Box>
         </CardContent>
       </Card>
     </Box>

@@ -7,6 +7,7 @@ import { i18nProvider } from './i18n';
 import Dashboard from './pages/Dashboard';
 import AccountSettings from './pages/AccountSettings';
 import { SystemConfigPage } from './pages/SystemConfigPage';
+import { SimulatorPage } from './pages/SimulatorPage';
 import { LoginPage } from './pages/LoginPage';
 import { CustomLayout, CustomError } from './components';
 import { theme, darkTheme } from './theme';
@@ -24,7 +25,7 @@ const CustomLoading = () => (
       gap: 2,
     }}
   >
-    <CircularProgress size={40} sx={{ color: '#2563eb' }} />
+    <CircularProgress size={40} sx={{ color: '#0d9488' }} />
     <Typography variant="body1" color="text.secondary" sx={{ color: '#64748b' }}>
       Loading...
     </Typography>
@@ -161,6 +162,7 @@ const App = () => (
     <CustomRoutes>
       <Route path="/account/settings" element={<AccountSettings />} />
       <Route path="/system/config" element={<SystemConfigPage />} />
+      <Route path="/simulator" element={<SimulatorPage />} />
     </CustomRoutes>
     </Admin>
 );

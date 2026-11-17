@@ -3,9 +3,9 @@ import { alpha, createTheme, PaletteMode } from '@mui/material/styles';
 // Light theme palette
 const lightPalette = {
   primary: {
-    main: '#2563eb',
-    light: '#60a5fa',
-    dark: '#1e40af',
+    main: '#0d9488',
+    light: '#5eead4',
+    dark: '#115e59',
     contrastText: '#ffffff',
   },
   secondary: {
@@ -49,9 +49,9 @@ const lightPalette = {
 // Dark theme palette
 const darkPalette = {
   primary: {
-    main: '#3b82f6',
-    light: '#60a5fa',
-    dark: '#2563eb',
+    main: '#14b8a6',
+    light: '#5eead4',
+    dark: '#0d9488',
     contrastText: '#ffffff',
   },
   secondary: {
@@ -296,7 +296,7 @@ export const createAppTheme = (mode: PaletteMode) => {
         styleOverrides: {
           paper: {
             // Light theme uses dark blue, dark theme stays dark grey
-            backgroundColor: isDark ? '#1e293b' : '#1e40af',
+            backgroundColor: isDark ? '#1e293b' : '#115e59',
             borderRight: 'none',
             transition: 'all 0.3s ease',
           },

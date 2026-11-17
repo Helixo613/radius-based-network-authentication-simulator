@@ -70,6 +70,7 @@ export const CustomAppBar = (props: AppBarProps) => {
               {sidebarOpen ? <MenuOpenIcon /> : <MenuIcon />}
             </IconButton>
           </Tooltip>
+          <Box component="img" src="/admin/logo.svg" alt="" sx={{ width: 28, height: 28 }} />
           <Typography 
             variant="h6" 
             sx={{ 

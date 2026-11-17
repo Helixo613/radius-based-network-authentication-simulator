@@ -5,7 +5,7 @@ const customEnglishMessages: TranslationMessages = {
   ...englishMessages,
   app: {
     title: 'Radius Based Network Authentication Simulator',
-    subtitle: 'Enterprise-grade RADIUS Server Management Platform',
+    subtitle: 'Simulate RADIUS authentication, authorization and accounting',
     loading: 'Loading...',
   },
   auth: {
@@ -18,6 +18,7 @@ const customEnglishMessages: TranslationMessages = {
   },
   menu: {
     dashboard: 'Dashboard',
+    simulator: 'Simulator',
     radius: 'RADIUS Management',
     radius_users: 'Users Management',
     online_sessions: 'Online Sessions',
@@ -27,7 +28,7 @@ const customEnglishMessages: TranslationMessages = {
     nas_devices: 'NAS Devices',
     network_nodes: 'Network Nodes',
     system: 'System Management',
-    operators: 'Operators Management',
+    operators: 'Operators',
     certificates: 'Certificates',
     system_config: 'System Configuration',
     account_settings: 'Account Settings',
