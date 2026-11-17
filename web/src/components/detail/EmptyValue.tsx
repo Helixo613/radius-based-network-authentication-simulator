@@ -5,10 +5,10 @@ export interface EmptyValueProps {
 }
 
 /**
- * 空态组件
- * 用于在详情页中显示空值占位符
+ * Empty state component
+ * Shows an empty-value placeholder on detail pages
  */
-export const EmptyValue = ({ message = '暂无数据' }: EmptyValueProps) => (
+export const EmptyValue = ({ message = 'No data' }: EmptyValueProps) => (
   <Box
     sx={{
       display: 'flex',

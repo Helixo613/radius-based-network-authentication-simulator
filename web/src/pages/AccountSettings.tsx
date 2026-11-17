@@ -108,7 +108,7 @@ export default function AccountSettings() {
 
   const handleAuthError = (error: unknown) => {
     if (error instanceof ApiError && error.status === 401) {
-      notify('认证已过期，请重新登录', { type: 'error' });
+      notify('Session expired, please log in again', { type: 'error' });
       clearAuthStorage();
       window.location.href = '/login';
       return true;
@@ -172,35 +172,35 @@ export default function AccountSettings() {
       }
       queryClient.setQueryData(ACCOUNT_QUERY_KEY, data);
       queryClient.invalidateQueries({ queryKey: ['auth', 'getIdentity'] });
-      notify('用户信息更新成功');
+      notify('Profile updated');
     },
     onError: error => {
       if (handleAuthError(error)) {
         return;
       }
-      const message = error instanceof Error ? error.message : '未知错误';
-      notify(`更新用户信息失败: ${message}`, { type: 'error' });
+      const message = error instanceof Error ? error.message : 'Unknown error';
+      notify(`Failed to update profile: ${message}`, { type: 'error' });
     },
   });
 
   const passwordMutation = useApiMutation<{ message?: string }>({
     onSuccess: () => {
-      notify('密码修改成功');
+      notify('Password changed');
       setPasswordForm({ newPassword: '', confirmPassword: '' });
     },
     onError: error => {
       if (handleAuthError(error)) {
         return;
       }
-      const message = error instanceof Error ? error.message : '未知错误';
-      notify(`密码修改失败: ${message}`, { type: 'error' });
+      const message = error instanceof Error ? error.message : 'Unknown error';
+      notify(`Failed to change password: ${message}`, { type: 'error' });
     },
   });
 
   const handleProfileSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!profileForm.realname || !profileForm.realname.trim()) {
-      notify('真实姓名不能为空', { type: 'error' });
+      notify('Full name cannot be empty', { type: 'error' });
       return;
     }
     const requestData: Record<string, string> = {
@@ -231,12 +231,12 @@ export default function AccountSettings() {
     e.preventDefault();
 
     if (passwordForm.newPassword !== passwordForm.confirmPassword) {
-      notify('新密码和确认密码不一致', { type: 'error' });
+      notify('New password and confirmation do not match', { type: 'error' });
       return;
     }
 
     if (passwordForm.newPassword.length < 6) {
-      notify('新密码长度至少6位', { type: 'error' });
+      notify('New password must be at least 6 characters', { type: 'error' });
       return;
     }
 
@@ -265,7 +265,7 @@ export default function AccountSettings() {
             {translate('pages.account_settings.title')}
           </Typography>
 
-          {/* 个人信息组 */}
+          {/* Personal info group */}
           <Accordion
             expanded={expandedGroups.includes('profile')}
             onChange={() => handleGroupToggle('profile')}
@@ -349,7 +349,7 @@ export default function AccountSettings() {
                     size="medium"
                   />
 
-                  {/* 只读信息 */}
+                  {/* Read-only info */}
                   <Alert 
                     severity="info" 
                     sx={{ mt: 2 }}
@@ -364,7 +364,7 @@ export default function AccountSettings() {
                       gap: { xs: 1, sm: 3 } 
                     }}>
                       <Typography variant="body2" sx={{ fontSize: { xs: '0.875rem', sm: '1rem' } }}>
-                        <strong>{translate('pages.account_settings.permission_level')}：</strong>
+                        <strong>{translate('pages.account_settings.permission_level')}:</strong>
                         <span
                           style={{
                             color:
@@ -379,7 +379,7 @@ export default function AccountSettings() {
                         </span>
                       </Typography>
                       <Typography variant="body2" sx={{ fontSize: { xs: '0.875rem', sm: '1rem' } }}>
-                        <strong>{translate('pages.account_settings.account_status')}：</strong>
+                        <strong>{translate('pages.account_settings.account_status')}:</strong>
                         <span style={{ color: userInfo.status === 'enabled' ? '#2e7d32' : '#757575' }}>
                           {getStatusLabel(userInfo.status)}
                         </span>
@@ -407,7 +407,7 @@ export default function AccountSettings() {
             </AccordionDetails>
           </Accordion>
 
-          {/* 密码修改组 */}
+          {/* Password change group */}
           <Accordion
             expanded={expandedGroups.includes('password')}
             onChange={() => handleGroupToggle('password')}
@@ -446,14 +446,14 @@ export default function AccountSettings() {
             <AccordionDetails sx={{ px: 3, py: 3 }}>
               <form onSubmit={handlePasswordSubmit}>
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-                  {/* 提示块独占一行 */}
+                  {/* Hint block takes a full row */}
                   <Alert severity="warning">
                     <Typography variant="body2" sx={{ fontSize: { xs: '0.875rem', sm: '1rem' } }}>
                       {translate('pages.account_settings.password_requirement')}
                     </Typography>
                   </Alert>
 
-                  {/* 密码输入框区域 */}
+                  {/* Password input area */}
                   <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: 3 }}>
                     <TextField
                       fullWidth

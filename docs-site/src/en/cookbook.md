@@ -1,7 +1,5 @@
 # Scenario Cookbook
 
-> 中文版本：[场景实战手册](../zh/cookbook.md)
-
 The [Vendor Integration Guide](./vendor-guide.md) is a **reference card** — it
 tells you which attributes ToughRADIUS sends to / parses for a given vendor.
 This cookbook goes one step further: it is organized around **real operational

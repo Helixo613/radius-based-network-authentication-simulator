@@ -1,9 +1,8 @@
 # ToughRADIUS AI Agent Development Guide
 
 > **Canonical.** This file holds the authoritative agent development rules and is
-> referenced directly by the agent tooling. A bilingual handbook digest is
-> available for discoverability — English: [`docs-site/src/en/agent-guide.md`](docs-site/src/en/agent-guide.md),
-> 中文：[`docs-site/src/zh/agent-guide.md`](docs-site/src/zh/agent-guide.md) — but
+> referenced directly by the agent tooling. A handbook digest is
+> available for discoverability — [`docs-site/src/en/agent-guide.md`](docs-site/src/en/agent-guide.md) — but
 > it summarizes rather than replaces this file. When in doubt, follow this file.
 
 ## Product Scope Baseline
@@ -24,7 +23,7 @@ Agent-driven development is organized around three artifacts:
 
 - [`docs/roadmap.md`](docs/roadmap.md) — long-term roadmap and milestones (`M1`–`M7`), each mapped to `TR-F` feature IDs. This is the task source for agent work.
 - [`.agents/skills/`](.agents/skills/) — reusable skill SOPs, one folder per skill (`.agents/skills/<name>/SKILL.md`). Execution SOPs include: add vendor VSA, add EAP method, add admin API, add React Admin resource, add config schema, add acceptance test, sync upstream radius, reference RFC, align checklist, write Go tests, document Go APIs, and release version review. Pick the matching skill before starting a task type.
-- Agents are run **on your own host** with your own agent/CLI, not via a CI workflow. See [`.agents/README.md`](.agents/README.md) for the guide and guardrails.
+- Agents are run **on your own host** with your own agent/CLI, not via a CI workflow. See the skills under [`.agents/skills/`](.agents/skills/) for the guide and guardrails.
 
 Quality gates for every agent change: open a PR (never push directly to `main`), then `go build ./...`, `go test ./...`, `golangci-lint run` (v2.12.2), and `cd web && npm run build` for frontend changes. PRs that change `.github/workflows/**` or `.github/actionlint.y*ml` must also check the `Workflow Lint` result; that gate runs `actionlint -shellcheck=` to validate GitHub Actions YAML, expressions, and action inputs without mixing in existing shell-style warnings.
 

@@ -71,7 +71,7 @@ func ListAccounting(c echo.Context) error {
 
 	query := db.Model(&domain.RadiusAccounting{})
 
-	// Filter by username (使用转义防止 LIKE 通配符注入)
+	// Filter by username (Escape to prevent LIKE wildcard injection)
 	if username := c.QueryParam("username"); username != "" {
 		query = query.Where("username LIKE ?", "%"+escapeLikePattern(username)+"%")
 	}
@@ -111,7 +111,7 @@ func ListAccounting(c echo.Context) error {
 		query = query.Where("delegated_ipv6_prefix LIKE ?", "%"+escapeLikePattern(delegatedIpv6Prefix)+"%")
 	}
 
-	// Filter by start time range (支持 RFC3339 和 datetime-local 两种格式)
+	// Filter by start time range (Supports both RFC3339 and datetime-local formats)
 	if startTimeGte := c.QueryParam("acct_start_time_gte"); startTimeGte != "" {
 		parsedTime, err := parseFlexibleTime(startTimeGte)
 		if err == nil {

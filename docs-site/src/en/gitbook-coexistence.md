@@ -1,7 +1,5 @@
 # mdbook & GitBook Coexistence
 
-> 中文版本：[mdbook 与 GitBook 并存](../zh/gitbook-coexistence.md)
-
 ToughRADIUS also publishes documentation through **GitBook**
 (`docs.toughradius.net`). This section records the
 decision (roadmap item **M13.0**) for how the new mdBook handbook relates to that
@@ -60,22 +58,11 @@ corresponding chapter instead of duplicating its content.
 
 `docs-site/src/SUMMARY.md` is read by **both** tools, so keep it to the subset of
 Markdown that they parse the same way: a top `# Summary` title, a non-bulleted
-`[Introduction / 引言](./introduction.md)` landing link, and **nested bullet lists**
-for grouping. The two language sections are expressed as top-level entries
-(`- [English](./en/overview.md)` and `- [中文](./zh/overview.md)`) with their pages
-nested beneath them. Avoid `#` / `##` part headers for grouping: mdBook only groups
+`[Introduction](./introduction.md)` landing link, and **nested bullet lists**
+for grouping. The English section is a top-level entry
+(`- [English](./en/overview.md)`) with its pages nested beneath it. Avoid `#` / `##` part headers for grouping: mdBook only groups
 on `#` while GitBook only groups on `##`, so a nested list is the one form that both
 render identically.
-
-## Language toggle in the menu bar
-
-The mdBook output injects a small EN / 中文 switch into the top menu bar
-(`docs-site/assets/lang-toggle.{js,css}`, wired via `additional-js` /
-`additional-css` in `book.toml`). It rewrites the last `/en/` or `/zh/` path
-segment, which works because the two language trees keep identical file names.
-This toggle exists **only** on the mdBook/Pages pipeline; GitBook ignores
-`book.toml` extras, so GitBook readers switch languages through the sidebar
-sections and per-chapter cross-links instead.
 
 ## Build and validation
 

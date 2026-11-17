@@ -5,7 +5,7 @@ description: Align requirements with and update the feature checklist docs/featu
 
 # Skill: Align Requirements / Update the Feature Checklist
 
-> Scope: all feature IDs | Baseline doc: `docs/feature-checklist.md` (English version `feature-checklist.en.md`)
+> Scope: all feature IDs | Baseline doc: `docs/feature-checklist.md`
 
 ## When to use
 - Before developing any new requirement / issue.
@@ -16,7 +16,6 @@ description: Align requirements with and update the feature checklist docs/featu
 2. **Non-goal check**: confirm the requirement is not in `TR-N001`-`TR-N005` (payment/orders, CRM/tickets, generic monitoring, multi-tenant SaaS, rewriting the protocol stack/framework). If it hits a non-goal, reject it or raise a scope decision first.
 3. **Cannot map**: first submit a PR that **only modifies the feature checklist**:
    - Add the feature ID, category, scope description, status, related code paths, and acceptance/dev boundary.
-   - Sync the English version `feature-checklist.en.md`.
 4. **Scheduling**: if needed, add a milestone or subtask in `docs/roadmap.md`.
 5. **Implementation**: only enter code implementation after the checklist is merged; the PR references the corresponding ID.
 

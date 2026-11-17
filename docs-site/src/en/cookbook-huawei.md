@@ -1,6 +1,5 @@
 # Cookbook: Huawei BRAS / NetEngine
 
-> 中文版本：[实战手册：华为 BRAS / NetEngine](../zh/cookbook-huawei.md)
 >
 > This chapter is part of the [Scenario Cookbook](./cookbook.md) and follows its
 > [five-part shape and reading conventions](./cookbook.md#the-five-part-shape-of-every-scenario).

@@ -112,15 +112,15 @@ func renderReport(date string, run acceptanceRun) string {
 	writeScenarioTable(&b, run.Scenarios)
 	writeFailureDetails(&b, run.Scenarios)
 	fmt.Fprintln(&b)
-	fmt.Fprintln(&b, "## 中文")
+	fmt.Fprintln(&b, "## Chinese")
 	fmt.Fprintln(&b)
-	fmt.Fprintf(&b, "**结论：** %s\n\n", chineseVerdict(run.Verdict))
+	fmt.Fprintf(&b, "**Result:** %s\n\n", chineseVerdict(run.Verdict))
 	writeCoverageNoteCN(&b, run.Scenarios)
-	fmt.Fprintln(&b, "### 运行上下文")
+	fmt.Fprintln(&b, "### Run context")
 	fmt.Fprintln(&b)
 	writeContextTable(&b, run)
 	fmt.Fprintln(&b)
-	fmt.Fprintln(&b, "### 场景结果")
+	fmt.Fprintln(&b, "### Scenario results")
 	fmt.Fprintln(&b)
 	writeScenarioTableCN(&b, run.Scenarios)
 	writeFailureDetailsCN(&b, run.Scenarios)
@@ -156,7 +156,7 @@ func writeScenarioTable(b *strings.Builder, scenarios []scenario) {
 }
 
 func writeScenarioTableCN(b *strings.Builder, scenarios []scenario) {
-	fmt.Fprintln(b, "| 场景 | 方法 | 预期 | 状态 | 耗时 | 说明 |")
+	fmt.Fprintln(b, "| Scenario | Method | Expected | Status | Duration | Notes |")
 	fmt.Fprintln(b, "| --- | --- | --- | --- | ---: | --- |")
 	for _, s := range scenarios {
 		fmt.Fprintf(b, "| %s | %s | %s | %s | %d ms | %s |\n",
@@ -184,7 +184,7 @@ func writeFailureDetailsCN(b *strings.Builder, scenarios []scenario) {
 			continue
 		}
 		fmt.Fprintln(b)
-		fmt.Fprintf(b, "### 失败输出：%s\n\n", s.Name)
+		fmt.Fprintf(b, "### Failure output:%s\n\n", s.Name)
 		fmt.Fprintln(b, "```text")
 		fmt.Fprintln(b, truncate(s.Output, 4000))
 		fmt.Fprintln(b, "```")
@@ -203,7 +203,7 @@ func writeCoverageNoteCN(b *strings.Builder, scenarios []scenario) {
 	if !hasPEAPExternalCoverageGap(scenarios) {
 		return
 	}
-	fmt.Fprintln(b, "覆盖说明：PEAP/MSCHAPv2 外部 `eapol_test` 场景仍为 skipped，并由 [#495](https://github.com/talkincode/toughradius/issues/495) 跟踪，因此本报告代表部分外部覆盖，不宣称完整 PEAP 外部验收。")
+	fmt.Fprintln(b, "Coverage note: PEAP/MSCHAPv2 external `eapol_test` scenario is still skipped (tracked upstream in [#495](https://github.com/talkincode/toughradius/issues/495)), so this report represents partial external coverage and does not claim full PEAP external acceptance.")
 	fmt.Fprintln(b)
 }
 
@@ -270,17 +270,17 @@ func renderDocsEN(reports []string, run acceptanceRun) string {
 
 func renderDocsZH(reports []string, run acceptanceRun) string {
 	var b strings.Builder
-	fmt.Fprintln(&b, "# EAP 验收测试报告")
+	fmt.Fprintln(&b, "# EAP Acceptance Test Report")
 	fmt.Fprintln(&b)
-	fmt.Fprintln(&b, "每周 EAP 验收任务使用外部 `eapol_test` supplicant 验证 ToughRADIUS，并在这里展示最近保留的报告。")
+	fmt.Fprintln(&b, "The weekly EAP acceptance job uses external `eapol_test` supplicant to validate the server, and lists the latest kept reports here.")
 	fmt.Fprintln(&b)
-	fmt.Fprintf(&b, "**最近结论：** %s\n\n", chineseVerdict(run.Verdict))
+	fmt.Fprintf(&b, "**Latest result:** %s\n\n", chineseVerdict(run.Verdict))
 	writeCoverageNoteCN(&b, run.Scenarios)
-	fmt.Fprintln(&b, "## 最近场景摘要")
+	fmt.Fprintln(&b, "## Latest scenario summary")
 	fmt.Fprintln(&b)
 	writeScenarioTableCN(&b, run.Scenarios)
 	fmt.Fprintln(&b)
-	fmt.Fprintln(&b, "## 保留报告")
+	fmt.Fprintln(&b, "## Kept reports")
 	fmt.Fprintln(&b)
 	writeReportLinks(&b, reports)
 	return b.String()
@@ -337,13 +337,13 @@ func isPEAPMSCHAPv2Scenario(id string) bool {
 func chineseVerdict(verdict string) string {
 	switch verdict {
 	case "accepted":
-		return "通过"
+		return "passed"
 	case "partial":
-		return "部分通过"
+		return "partially passed"
 	case "failed":
-		return "失败"
+		return "failed"
 	case "incomplete":
-		return "未完成"
+		return "incomplete"
 	default:
 		return verdict
 	}
@@ -352,11 +352,11 @@ func chineseVerdict(verdict string) string {
 func chineseStatus(status string) string {
 	switch status {
 	case "passed":
-		return "通过"
+		return "passed"
 	case "failed":
-		return "失败"
+		return "failed"
 	case "skipped":
-		return "跳过"
+		return "skipped"
 	default:
 		return status
 	}

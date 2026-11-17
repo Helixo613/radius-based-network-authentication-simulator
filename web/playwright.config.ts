@@ -1,40 +1,40 @@
 import { defineConfig, devices } from '@playwright/test';
 
 /**
- * Playwright 配置文件
+ * Playwright Config file
  * @see https://playwright.dev/docs/test-configuration
  */
 export default defineConfig({
   testDir: './e2e',
   
-  /* 并行运行测试 */
+  /* Run tests in parallel */
   fullyParallel: true,
   
-  /* 在 CI 上失败时重试 */
+  /* Retry on failure in CI */
   retries: process.env.CI ? 2 : 0,
   
-  /* CI 上使用所有 CPU，本地使用一半 */
+  /* CI use all CPUs, locally use half */
   workers: process.env.CI ? 1 : undefined,
   
   /* Reporter */
   reporter: 'html',
   
-  /* 共享设置 */
+  /* Shared settings */
   use: {
-    /* 基础 URL */
+    /* Base URL */
     baseURL: 'http://localhost:3000',
     
-    /* 截图设置 */
+    /* Screenshot settings */
     screenshot: 'only-on-failure',
     
-    /* 视频设置 */
+    /* Video settings */
     video: 'retain-on-failure',
     
-    /* 追踪设置 */
+    /* Trace settings */
     trace: 'on-first-retry',
   },
 
-  /* 配置项目 */
+  /* Configure projects */
   projects: [
     {
       name: 'chromium',
@@ -51,7 +51,7 @@ export default defineConfig({
       use: { ...devices['Desktop Safari'] },
     },
 
-    /* 移动端测试 */
+    /* Mobile tests */
     {
       name: 'Mobile Chrome',
       use: { ...devices['Pixel 5'] },
@@ -62,7 +62,7 @@ export default defineConfig({
     },
   ],
 
-  /* 启动开发服务器 */
+  /* Start the dev server */
   webServer: {
     command: 'npm run dev',
     url: 'http://localhost:3000',

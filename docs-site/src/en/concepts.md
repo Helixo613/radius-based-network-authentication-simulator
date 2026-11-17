@@ -1,7 +1,5 @@
 # Concepts & Terminology
 
-> 中文版本：[核心术语与概念](../zh/concepts.md)
-
 This chapter explains the core AAA terminology used throughout ToughRADIUS and
 maps each concept to where it lives in the product. For the authoritative list
 of protocol specifications and how each one maps to the code, see the

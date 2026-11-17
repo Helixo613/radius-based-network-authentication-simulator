@@ -1,7 +1,5 @@
 # Portal / Hotspot Integration Boundary
 
-> 中文版本：[Portal / Hotspot 对接边界](../zh/portal-hotspot-boundary.md)
-
 This chapter defines the hard product boundary for captive portal and hotspot
 deployments.
 

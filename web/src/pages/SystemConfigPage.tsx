@@ -41,7 +41,7 @@ import { useDataProvider, useNotify, useTranslate, useGetList } from 'react-admi
 import { useApiQuery } from '../hooks/useApiQuery';
 import { API_BASE } from '../utils/apiClient';
 
-// 配置项类型定义
+// Setting item type definitions
 interface ConfigSchema {
   key: string;
   type: 'string' | 'int' | 'bool' | 'duration' | 'json';
@@ -245,7 +245,7 @@ export const SystemConfigPage: React.FC = () => {
             onChange={(e) => updateConfigValue(schema.key, e.target.value)}
           >
             <MenuItem value="">
-              <em>{translate('pages.system_config.cert_select_none', { _: '未选择 (None)' })}</em>
+              <em>{translate('pages.system_config.cert_select_none', { _: 'Not selected (None)' })}</em>
             </MenuItem>
             {allOptions.map((name) => (
               <MenuItem key={name} value={name}>
@@ -376,12 +376,12 @@ export const SystemConfigPage: React.FC = () => {
       );
     },
     onSuccess: () => {
-      notify('配置保存成功', { type: 'success' });
+      notify('Settings saved', { type: 'success' });
       queryClient.invalidateQueries({ queryKey: SETTINGS_QUERY_KEY });
     },
     onError: (error: unknown) => {
       const message = error instanceof Error ? error.message : 'unknown error';
-      notify(`配置保存失败: ${message}`, { type: 'error' });
+      notify(`Failed to save settings: ${message}`, { type: 'error' });
     },
   });
 
@@ -401,7 +401,7 @@ export const SystemConfigPage: React.FC = () => {
     });
     setConfigs(nextConfigs);
     setResetDialogOpen(false);
-    notify('已重置为默认值', { type: 'info' });
+    notify('Reset to default', { type: 'info' });
   };
 
   const handleGroupToggle = (group: string) => {
@@ -425,7 +425,7 @@ export const SystemConfigPage: React.FC = () => {
       });
       if (!response.ok) {
         const payload = await response.json().catch(() => ({}));
-        throw new Error(payload?.message || translate('pages.system_config.backup.failed', { _: '备份失败' }));
+        throw new Error(payload?.message || translate('pages.system_config.backup.failed', { _: 'Backup failed' }));
       }
       const blob = await response.blob();
       const disposition = response.headers.get('Content-Disposition') || '';
@@ -439,9 +439,9 @@ export const SystemConfigPage: React.FC = () => {
       link.click();
       document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
-      notify(translate('pages.system_config.backup.success', { _: '备份成功' }), { type: 'success' });
+      notify(translate('pages.system_config.backup.success', { _: 'Backup succeeded' }), { type: 'success' });
       notify(
-        translate('pages.system_config.backup.notice', { _: '备份文件包含明文密码与凭据，请务必妥善保管。' }),
+        translate('pages.system_config.backup.notice', { _: 'The backup file contains plaintext passwords and credentials. Keep it safe.' }),
         { type: 'info', autoHideDuration: 8000 }
       );
     } catch (error) {
@@ -451,7 +451,7 @@ export const SystemConfigPage: React.FC = () => {
     }
   };
 
-  // 选择恢复文件后先弹确认框，避免误覆盖现有配置（含管理员账号/密码）
+  // Confirm after choosing a restore file, to avoid overwriting existing settings (including the admin account/password) by mistake
   const handleRestoreSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0] ?? null;
     if (restoreInputRef.current) {
@@ -491,9 +491,9 @@ export const SystemConfigPage: React.FC = () => {
       });
       const payload = await response.json().catch(() => ({}));
       if (!response.ok) {
-        throw new Error(payload?.message || translate('pages.system_config.restore.failed', { _: '恢复失败' }));
+        throw new Error(payload?.message || translate('pages.system_config.restore.failed', { _: 'Restore failed' }));
       }
-      notify(translate('pages.system_config.restore.success', { _: '恢复成功' }), { type: 'success' });
+      notify(translate('pages.system_config.restore.success', { _: 'Restore succeeded' }), { type: 'success' });
       handleReload();
     } catch (error) {
       notify((error as Error).message, { type: 'error' });
@@ -504,7 +504,7 @@ export const SystemConfigPage: React.FC = () => {
 
   const handleSave = () => {
     if (!schemaQuery.data?.length) {
-      notify('暂无可保存的配置项', { type: 'warning' });
+      notify('No settings to save', { type: 'warning' });
       return;
     }
     saveMutation.mutate({ ...configs });
@@ -512,7 +512,7 @@ export const SystemConfigPage: React.FC = () => {
 
   return (
     <Box sx={{ p: 3 }}>
-      {/* 页面标题 */}
+      {/* Page title */}
       <Box sx={{ mb: 3 }}>
         <Typography variant="h4" gutterBottom>
           {translate('pages.system_config.title')}
@@ -522,7 +522,7 @@ export const SystemConfigPage: React.FC = () => {
         </Typography>
       </Box>
 
-      {/* 操作按钮 */}
+      {/* Action buttons */}
       <Box sx={{ mb: 3 }}>
         <Button
           variant="contained"
@@ -557,7 +557,7 @@ export const SystemConfigPage: React.FC = () => {
           disabled={backupLoading}
           sx={{ ml: 2, mr: 2 }}
         >
-          {translate('pages.system_config.backup.button', { _: '系统备份' })}
+          {translate('pages.system_config.backup.button', { _: 'System Backup' })}
         </Button>
         <Button
           variant="outlined"
@@ -565,7 +565,7 @@ export const SystemConfigPage: React.FC = () => {
           onClick={() => restoreInputRef.current?.click()}
           disabled={restoreLoading}
         >
-          {translate('pages.system_config.restore.button', { _: '系统恢复' })}
+          {translate('pages.system_config.restore.button', { _: 'System Restore' })}
         </Button>
         <input
           ref={restoreInputRef}
@@ -576,7 +576,7 @@ export const SystemConfigPage: React.FC = () => {
         />
       </Box>
 
-      {/* 配置分组 */}
+      {/* Settings group */}
       {!isLoading && (schemaQuery.data?.length ?? 0) > 0 && (
         <Box sx={{ mb: 2 }}>
           <Alert severity="info" sx={{ mb: 2 }}>
@@ -586,7 +586,7 @@ export const SystemConfigPage: React.FC = () => {
           {orderedGroupEntries.map(([groupKey, groupSchemas]) => {
           const groupConfig = configGroups[groupKey as keyof typeof configGroups] || {
             title: groupKey,
-            description: `${groupKey} 相关配置`,
+            description: `${groupKey} settings`,
             icon: <SettingsIcon />,
             color: '#666',
           };
@@ -681,15 +681,15 @@ export const SystemConfigPage: React.FC = () => {
         <Alert severity="warning">
           {translate('pages.system_config.no_config_warning')}
           <br />
-          <strong>调试信息：</strong>
+          <strong>Debug info:</strong>
           <br />
-          - 配置schema数量：{schemaQuery.data?.length ?? 0}
+          - Settings schema count:{schemaQuery.data?.length ?? 0}
           <br />
-          - 配置值数量：{Object.keys(configs).length}
+          - Settings value count:{Object.keys(configs).length}
           <br />
-          - API地址：/api/v1/system/config/schemas
+          - API address:/api/v1/system/config/schemas
           <br />
-          请打开浏览器控制台查看详细日志。
+          Open the browser console for detailed logs.
         </Alert>
       )}
 
@@ -699,7 +699,7 @@ export const SystemConfigPage: React.FC = () => {
         </Alert>
       )}
 
-      {/* 重置确认对话框 */}
+      {/* Reset confirmation dialog */}
       <Dialog
       open={resetDialogOpen}
       onClose={() => setResetDialogOpen(false)}
@@ -714,7 +714,7 @@ export const SystemConfigPage: React.FC = () => {
           {translate('pages.system_config.reset_warning')}
           <br />
           <br />
-          <strong>注意：</strong>此操作将清除您对以下配置项的自定义设置：
+          <strong>Note:</strong>This clears your custom values for the following settings:
           <br />
           {schemaQuery.data?.map(schema => (
             <span key={schema.key}>
@@ -736,7 +736,7 @@ export const SystemConfigPage: React.FC = () => {
       </DialogActions>
     </Dialog>
 
-      {/* 系统恢复确认对话框 */}
+      {/* System restore confirmation dialog */}
       <Dialog
         open={restoreDialogOpen}
         onClose={handleRestoreCancel}
@@ -744,21 +744,21 @@ export const SystemConfigPage: React.FC = () => {
         aria-describedby="restore-dialog-description"
       >
         <DialogTitle id="restore-dialog-title">
-          {translate('pages.system_config.restore.confirm_title', { _: '确认系统恢复' })}
+          {translate('pages.system_config.restore.confirm_title', { _: 'Confirm System Restore' })}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="restore-dialog-description">
             {translate('pages.system_config.restore.confirm_warning', {
-              _: '系统恢复将用备份文件中的数据覆盖现有配置（节点、NAS、套餐、用户、系统配置、操作员）。这会覆盖当前管理员账号及密码，恢复后可能需要使用备份中的凭据重新登录。确定要继续吗？',
+              _: 'System restore overwrites existing data (nodes, NAS, profiles, users, system settings, operators) with the backup file. This replaces the current admin account and password, so you may need to log in again with the credentials from the backup. Continue?',
             })}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleRestoreCancel}>
-            {translate('pages.system_config.restore.cancel', { _: '取消' })}
+            {translate('pages.system_config.restore.cancel', { _: 'Cancel' })}
           </Button>
           <Button onClick={handleRestoreConfirm} color="warning" variant="contained" disabled={restoreLoading}>
-            {translate('pages.system_config.restore.confirm', { _: '确认恢复' })}
+            {translate('pages.system_config.restore.confirm', { _: 'Confirm Restore' })}
           </Button>
         </DialogActions>
       </Dialog>

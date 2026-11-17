@@ -1,7 +1,5 @@
 # LDAP / AD Authentication Backend
 
-> 中文版本：[LDAP / AD 认证后端](../zh/auth-ldap.md)
-
 ToughRADIUS can verify a user's password against an external LDAP directory or
 Microsoft Active Directory by performing an LDAP **bind**, instead of (or in
 addition to) the password stored in its own database. This lets you reuse an

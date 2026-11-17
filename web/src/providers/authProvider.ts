@@ -124,7 +124,7 @@ const fetchIdentityFromApi = async (token: string): Promise<OperatorUser | null>
 };
 
 export const authProvider: AuthProvider = {
-  // 登录
+  // Login
   login: async ({ username, password }) => {
     const request = new Request('/api/v1/auth/login', {
       method: 'POST',
@@ -137,14 +137,14 @@ export const authProvider: AuthProvider = {
       const result = await response.json();
 
       if (response.status < 200 || response.status >= 300) {
-        const errorMessage = result?.message || result?.error || response.statusText || '登录失败';
+        const errorMessage = result?.message || result?.error || response.statusText || 'Login failed';
         throw new Error(errorMessage);
       }
 
       const auth = result.data || result;
 
       if (!auth.token) {
-        throw new Error('登录响应中缺少 token');
+        throw new Error('Login response is missing token');
       }
 
       localStorage.setItem('token', auth.token);
@@ -163,27 +163,27 @@ export const authProvider: AuthProvider = {
 
       return Promise.resolve();
     } catch (error) {
-      console.error('登录错误:', error);
+      console.error('Login error:', error);
       return Promise.reject(error);
     }
   },
 
-  // 登出
+  // Logout
   logout: async () => {
     clearAuthStorage();
     return Promise.resolve();
   },
 
-  // 检查错误（如 401、403）
+  // Check errors (e.g. 401, 403)
   checkError: async error => {
     const status = error.status;
 
     if (status === 401) {
       clearAuthStorage();
-      return Promise.reject({ message: '认证已过期，请重新登录' });
+      return Promise.reject({ message: 'Session expired, please log in again' });
     }
 
-    // 403 表示权限不足，但不需要登出
+    // 403 means insufficient permission, but no logout needed
     if (status === 403) {
       return Promise.resolve();
     }
@@ -191,7 +191,7 @@ export const authProvider: AuthProvider = {
     return Promise.resolve();
   },
 
-  // 检查认证状态 - 快速同步检查以避免闪烁
+  // Check auth status - fast synchronous check to avoid flicker
   checkAuth: () => {
     const token = localStorage.getItem('token');
 
@@ -207,13 +207,13 @@ export const authProvider: AuthProvider = {
     return Promise.resolve();
   },
 
-  // 获取权限
+  // Get permissions
   getPermissions: async () => {
     const permissions = localStorage.getItem('permissions');
     return permissions ? Promise.resolve(JSON.parse(permissions)) : Promise.resolve([]);
   },
 
-  // 获取用户身份信息（供 AppBar UserMenu 显示 fullName）
+  // Get user identity (for AppBar UserMenu to show fullName)
   getIdentity: async () => {
     const cachedUser = readCachedUser();
     const cachedUsername = localStorage.getItem('username');

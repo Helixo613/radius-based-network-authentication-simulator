@@ -1,7 +1,5 @@
 # Agent Development Guide
 
-> 中文版本：[Agent 开发指南](../zh/agent-guide.md)
-
 This chapter is a **contributor-oriented** digest of how ToughRADIUS is built
 with AI coding agents. It summarizes the working rules, quality gates, and the
 auto-delegation loop so the workflow is discoverable from the handbook.
@@ -19,7 +17,7 @@ unrelated product directions.
 - The canonical scope baseline is
   [`docs/feature-checklist.md`](https://github.com/talkincode/toughradius/blob/main/docs/feature-checklist.md)
   (with an English copy at
-  [`docs/feature-checklist.en.md`](https://github.com/talkincode/toughradius/blob/main/docs/feature-checklist.en.md)).
+  [`docs/feature-checklist.md`](https://github.com/talkincode/toughradius/blob/main/docs/feature-checklist.md)).
 - Every task, issue, PR, test, and review note maps to a feature ID such as
   `TR-F004`.
 - If a request does not map to an existing ID, the checklist is updated first
@@ -37,7 +35,7 @@ Agent-driven development is organized around three artifacts:
   task source for agent work.
 - [`.agents/skills/`](https://github.com/talkincode/toughradius/tree/main/.agents/skills)
   — reusable skill SOPs, one folder per skill (`.agents/skills/<name>/SKILL.md`).
-- [`.agents/README.md`](https://github.com/talkincode/toughradius/blob/main/.agents/README.md)
+- [`.agents/skills/`](https://github.com/talkincode/toughradius/tree/main/.agents/skills)
   — the delegation reference and shared guardrails.
 
 Available execution SOPs include: add vendor VSA (`add-radius-vendor`), add EAP method

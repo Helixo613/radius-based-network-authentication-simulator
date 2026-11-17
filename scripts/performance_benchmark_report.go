@@ -243,29 +243,29 @@ func renderReport(date string, run benchmarkRun, previous previousReport) string
 	fmt.Fprintln(&b)
 	writeBenchmarkTable(&b, run.Benchmarks, comparisons)
 	fmt.Fprintln(&b)
-	fmt.Fprintln(&b, "## 中文")
+	fmt.Fprintln(&b, "## Chinese")
 	fmt.Fprintln(&b)
-	fmt.Fprintln(&b, "**结论：** 已记录")
+	fmt.Fprintln(&b, "**Result:** recorded")
 	fmt.Fprintln(&b)
-	fmt.Fprintln(&b, "本报告只提供性能可见性。GitHub 托管 runner 存在波动，因此当前工作流记录趋势信号，但不会因为耗时变化直接失败。")
+	fmt.Fprintln(&b, "This report only provides performance visibility. GitHub-hosted runners fluctuate, so the workflow records trend signals but never fails on timing changes.")
 	if !contextComparable {
 		fmt.Fprintln(&b)
-		fmt.Fprintln(&b, "上一份报告的 runner 上下文不同，因此 `Delta ns/op` 标记为 `n/a (context changed)`，避免把跨 runner 耗时差异呈现为直接趋势。")
+		fmt.Fprintln(&b, "The previous report ran on a different runner, so `Delta ns/op` is marked as `n/a (context changed)`, to avoid presenting cross-runner timing differences as a trend.")
 	}
 	fmt.Fprintln(&b)
-	fmt.Fprintln(&b, "### 运行上下文")
+	fmt.Fprintln(&b, "### Run context")
 	fmt.Fprintln(&b)
 	writeContextTable(&b, run)
 	fmt.Fprintln(&b)
-	fmt.Fprintln(&b, "### 摘要")
+	fmt.Fprintln(&b, "### Summary")
 	fmt.Fprintln(&b)
 	writeSummaryTableCN(&b, run)
 	fmt.Fprintln(&b)
-	fmt.Fprintln(&b, "### 最慢 Benchmark")
+	fmt.Fprintln(&b, "### Slowest Benchmark")
 	fmt.Fprintln(&b)
 	writeBenchmarkTable(&b, topByNs(run.Benchmarks, 10), comparisons)
 	fmt.Fprintln(&b)
-	fmt.Fprintln(&b, "### 最高内存分配 Benchmark")
+	fmt.Fprintln(&b, "### Highest memory allocation Benchmark")
 	fmt.Fprintln(&b)
 	writeBenchmarkTable(&b, topByBytes(run.Benchmarks, 10), comparisons)
 	return b.String()
@@ -306,12 +306,12 @@ func writeSummaryTableCN(b *strings.Builder, run benchmarkRun) {
 	packages := packageCount(run.Benchmarks)
 	slowest := firstBenchmark(topByNs(run.Benchmarks, 1))
 	highestAlloc := firstBenchmark(topByBytes(run.Benchmarks, 1))
-	fmt.Fprintln(b, "| 指标 | 值 |")
+	fmt.Fprintln(b, "| Metric | Value |")
 	fmt.Fprintln(b, "| --- | ---: |")
-	fmt.Fprintf(b, "| Benchmark 数量 | %d |\n", len(run.Benchmarks))
-	fmt.Fprintf(b, "| 包数量 | %d |\n", packages)
-	fmt.Fprintf(b, "| 最慢项 | %s |\n", escapeTable(formatBenchmarkRef(slowest)))
-	fmt.Fprintf(b, "| 最高 B/op | %s |\n", escapeTable(formatBenchmarkRef(highestAlloc)))
+	fmt.Fprintf(b, "| Benchmark count | %d |\n", len(run.Benchmarks))
+	fmt.Fprintf(b, "| Package count | %d |\n", packages)
+	fmt.Fprintf(b, "| Slowest item | %s |\n", escapeTable(formatBenchmarkRef(slowest)))
+	fmt.Fprintf(b, "| Highest B/op | %s |\n", escapeTable(formatBenchmarkRef(highestAlloc)))
 }
 
 func writeBenchmarkTable(b *strings.Builder, benchmarks []benchmarkResult, comparisons map[string]comparison) {
@@ -520,16 +520,16 @@ func renderDocsEN(reports []string, run benchmarkRun) string {
 
 func renderDocsZH(reports []string, run benchmarkRun) string {
 	var b strings.Builder
-	fmt.Fprintln(&b, "# 性能基准测试报告")
+	fmt.Fprintln(&b, "# Performance Benchmark Report")
 	fmt.Fprintln(&b)
-	fmt.Fprintln(&b, "每周 benchmark 任务基于现有 Go `Benchmark*` 函数记录 ToughRADIUS 性能信号。报告仅用于观察趋势，不会因为 GitHub 托管 runner 的耗时波动直接失败。")
+	fmt.Fprintln(&b, "The weekly benchmark job uses the existing Go `Benchmark*` functions to record performance signals. Reports are for observing trends and never fail on GitHub-hosted runner timing fluctuations.")
 	fmt.Fprintln(&b)
-	fmt.Fprintf(&b, "**最近结论：** %s\n\n", chineseVerdict(run.Verdict))
-	fmt.Fprintln(&b, "## 最近摘要")
+	fmt.Fprintf(&b, "**Latest result:** %s\n\n", chineseVerdict(run.Verdict))
+	fmt.Fprintln(&b, "## Latest summary")
 	fmt.Fprintln(&b)
 	writeSummaryTableCN(&b, run)
 	fmt.Fprintln(&b)
-	fmt.Fprintln(&b, "## 保留报告")
+	fmt.Fprintln(&b, "## Kept reports")
 	fmt.Fprintln(&b)
 	writeReportLinks(&b, reports)
 	return b.String()
@@ -635,7 +635,7 @@ func workflowURL() string {
 func chineseVerdict(verdict string) string {
 	switch verdict {
 	case "recorded":
-		return "已记录"
+		return "recorded"
 	default:
 		return verdict
 	}

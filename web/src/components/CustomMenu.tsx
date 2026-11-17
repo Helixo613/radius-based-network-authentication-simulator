@@ -31,11 +31,11 @@ export const CustomMenu = ({ dense, onMenuClick, logout }: MenuProps) => {
   const { data: identity } = useGetIdentity();
   const translate = useTranslate();
 
-  // 根据用户权限过滤菜单项
+  // Filter menu items by user permissions
   const filteredMenuItems = menuItems.filter(item => {
-    if (!item.permissions) return true; // 无权限限制的菜单项对所有人可见
-    if (!identity?.level) return false; // 未登录用户不显示需要权限的菜单
-    return item.permissions.includes(identity.level); // 检查用户权限是否在允许列表中
+    if (!item.permissions) return true; // Menu items without permission limits are visible to everyone
+    if (!identity?.level) return false; // Hide permission-gated menus for logged-out users
+    return item.permissions.includes(identity.level); // Check whether the user's permission is in the allowed list
   });
 
   return (
@@ -44,7 +44,7 @@ export const CustomMenu = ({ dense, onMenuClick, logout }: MenuProps) => {
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
-        // 侧边栏根据主题使用不同背景色
+        // Sidebar background depends on theme
         backgroundColor: isDark ? '#1e293b' : '#1e40af',
         color: '#ffffff',
         pt: 0,

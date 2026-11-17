@@ -1,7 +1,5 @@
 # Security Policy
 
-> 中文版本：[安全策略](../zh/security-policy.md)
-
 This chapter is the canonical home for ToughRADIUS security advisories and the
 guidance that goes with them. The repository's
 [`SECURITY.md`](https://github.com/talkincode/toughradius/blob/main/SECURITY.md)

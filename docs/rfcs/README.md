@@ -1,440 +1,63 @@
-# RADIUS RFC 协议文档
-
-> 📖 **本目录是 RFC 全文归档。** 精选、面向实现且引用经过校正的协议索引（含里程碑映射）见双语手册章节：
-> [协议与 RFC 索引](../../docs-site/src/zh/rfc-index.md) · [Protocol & RFC Reference](../../docs-site/src/en/rfc-index.md)。
-
-本目录包含 RADIUS 相关的 RFC 协议文档，共 **50 个** RFC 文档，供开发和参考使用。
-
-## 核心协议
-
-- **RFC 2865** - Remote Authentication Dial In User Service (RADIUS)
-
-  - RADIUS 核心协议，定义了基本的认证和授权机制
-  - 文件：`rfc2865.txt`
-
-- **RFC 2866** - RADIUS Accounting
-  - RADIUS 计费协议，定义了会话计费和统计机制
-  - 文件：`rfc2866.txt`
-
-## 扩展协议
-
-- **RFC 2867** - RADIUS Accounting Modifications for Tunnel Protocol Support
-
-  - 隧道协议的计费扩展
-  - 文件：`rfc2867.txt`
-
-- **RFC 2868** - RADIUS Attributes for Tunnel Protocol Support
-
-  - 隧道协议支持的 RADIUS 属性定义
-  - 文件：`rfc2868.txt`
-
-- **RFC 2869** - RADIUS Extensions
-
-  - RADIUS 扩展协议，包括 EAP 支持等
-  - 文件：`rfc2869.txt`
-
-- **RFC 6929** - RADIUS Protocol Extensions
-
-  - RADIUS 协议扩展（重要）
-  - 文件：`rfc6929.txt`
-
-- **RFC 7499** - Support of Fragmentation of RADIUS Packets
-  - RADIUS 数据包分片支持
-  - 文件：`rfc7499.txt`
-
-## 网络接入服务器 (NAS)
-
-- **RFC 2882** - Network Access Servers Requirements: Extended RADIUS Practices
-
-  - 网络接入服务器需求和扩展 RADIUS 实践
-  - 文件：`rfc2882.txt`
-
-- **RFC 5607** - RADIUS Authorization for NAS Management
-  - NAS 管理的 RADIUS 授权
-  - 文件：`rfc5607.txt`
-
-## IPv6 支持
-
-- **RFC 3162** - RADIUS and IPv6
-
-  - RADIUS 对 IPv6 的支持
-  - 文件：`rfc3162.txt`
-
-- **RFC 4818** - RADIUS Delegated-IPv6-Prefix Attribute
-
-  - RADIUS IPv6 前缀委派属性
-  - 文件：`rfc4818.txt`
-
-- **RFC 5997** - Use of Status-Server Packets in RADIUS
-
-  - RADIUS Status-Server 数据包的使用（支持 IPv6）
-  - 文件：`rfc5997.txt`
-
-- **RFC 6519** - RADIUS Extensions Support for Dual-Stack Lite
-
-  - RADIUS 对双栈 Lite 的扩展支持
-  - 文件：`rfc6519.txt`
-
-- **RFC 6911** - RADIUS Attributes for IPv6 Access Networks
-
-  - IPv6 接入网络的 RADIUS 属性
-  - 文件：`rfc6911.txt`
-
-- **RFC 6930** - RADIUS Attribute for IPv6 Rapid Deployment on IPv4 Infrastructures (6rd)
-
-  - IPv6 快速部署的 RADIUS 属性
-  - 文件：`rfc6930.txt`
-
-- **RFC 5969** - IPv6 Rapid Deployment on IPv4 Infrastructures (6rd) -- Protocol Specification
-
-  - 6rd 协议规范
-  - 文件：`rfc5969.txt`
-
-- **RFC 8772** - The China Mobile, Huawei, and ZTE Broadband Network Gateway (BNG) Simple Control and User Plane Separation Protocol (S-CUSP)
-
-  - Huawei/China Mobile/ZTE 制定的 BNG CUPS 协议，覆盖 IPv4/IPv6 访问流程
-  - 文件：`rfc8772-huawei-bng-s-cusp.txt`
-
-## EAP 相关
-
-### EAP 核心协议
-
-- **RFC 2284** - PPP Extensible Authentication Protocol (EAP) [已废弃]
-
-  - EAP 原始规范（已被 RFC 3748 取代，保留用于历史参考）
-  - 文件：`rfc2284.txt`
-
-- **RFC 3748** - Extensible Authentication Protocol (EAP)
-
-  - 可扩展认证协议，RADIUS EAP 的基础
-  - 文件：`rfc3748.txt`
-
-- **RFC 5247** - Extensible Authentication Protocol (EAP) Key Management Framework
-  - EAP 密钥管理框架
-  - 文件：`rfc5247.txt`
-
-### RADIUS EAP 集成
-
-- **RFC 3579** - RADIUS Support For Extensible Authentication Protocol (EAP)
-
-  - RADIUS 对 EAP 的支持
-  - 文件：`rfc3579.txt`
-
-- **RFC 3580** - IEEE 802.1X Remote Authentication Dial In User Service (RADIUS) Usage Guidelines
-  - IEEE 802.1X 与 RADIUS 集成的使用指南
-  - 文件：`rfc3580.txt`
-
-### EAP 认证方法
-
-- **RFC 3851** - The Secure/Multipurpose Internet Mail Extensions (S/MIME) Version 3.1 Message Specification
-
-  - 包含 EAP-MD5 Challenge 的相关定义
-  - 文件：`rfc3851.txt`
-
-- **RFC 5216** - The EAP-TLS Authentication Protocol
-
-  - EAP-TLS 认证协议（基于 TLS 的 EAP 方法）
-  - 文件：`rfc5216.txt`
-
-- **RFC 9190** - EAP-TLS 1.3: Using EAP-TLS with TLS 1.3
-
-  - EAP-TLS 使用 TLS 1.3 的更新（受保护成功指示、密钥导出、票据处理）
-  - 文件：`rfc9190-eap-tls13.txt`
-
-- **RFC 5281** - Extensible Authentication Protocol Tunneled Transport Layer Security Authenticated Protocol Version 0 (EAP-TTLSv0)
-
-  - EAP-TTLS 隧道 TLS 认证协议
-  - 文件：`rfc5281.txt`
-
-- **RFC 4186** - Extensible Authentication Protocol Method for Global System for Mobile Communications (GSM) Subscriber Identity Modules (EAP-SIM)
-
-  - EAP-SIM 认证方法（GSM SIM 卡认证）
-  - 文件：`rfc4186.txt`
-
-- **RFC 4187** - Extensible Authentication Protocol Method for 3rd Generation Authentication and Key Agreement (EAP-AKA)
-
-  - EAP-AKA 认证方法（3G UMTS 认证）
-  - 文件：`rfc4187.txt`
-
-- **RFC 4764** - The EAP-PSK Protocol: A Pre-Shared Key Extensible Authentication Protocol (EAP) Method
-
-  - EAP-PSK 预共享密钥认证方法
-  - 文件：`rfc4764.txt`
-
-- **RFC 5448** - Improved Extensible Authentication Protocol Method for 3GPP Mobile Network Authentication and Key Agreement (EAP-AKA')
-
-  - 改进的 EAP-IKEv2 认证方法
-  - 文件：`rfc5448.txt`
-
-- **RFC 7170** - Tunnel Extensible Authentication Protocol (TEAP) Version 1
-
-  - TEAP 隧道 EAP 协议 v1（Cisco 提出的新一代隧道 EAP）
-  - 文件：`rfc7170.txt`
-
-- **RFC 7542** - The Network Access Identifier (NAI) for the Extensible Authentication Protocol (EAP)
-  - EAP-PWD 基于密码的认证协议
-  - 文件：`rfc7542.txt`
-
-### EAP 扩展与应用
-
-- **RFC 6124** - An EAP Authentication Method Based on the Encrypted Key Exchange (EKE) Protocol
-  - 基于加密密钥交换的 EAP 认证方法（用于 Wi-Fi 集成）
-  - 文件：`rfc6124.txt`
-
-## 厂商特定属性
-
-- **RFC 2548** - Microsoft Vendor-specific RADIUS Attributes
-
-  - Microsoft 厂商特定 RADIUS 属性
-  - 文件：`rfc2548.txt`
-
-- **RFC 2759** - Microsoft PPP CHAP Extensions, Version 2 (MS-CHAP-V2)
-
-  - Microsoft MS-CHAP-V2 认证协议
-  - 文件：`rfc2759.txt`
-
-- **RFC 4679** - DSL Forum Vendor-Specific RADIUS Attributes
-  - DSL Forum（宽带论坛）厂商特定 RADIUS 属性
-  - 文件：`rfc4679.txt`
-
-## IEEE 802 网络支持
-
-- **RFC 5904** - RADIUS Attributes for IEEE 802 Networks
-
-  - IEEE 802 网络的 RADIUS 属性（包括 Wi-Fi）
-  - 文件：`rfc5904.txt`
-
-- **RFC 7268** - RADIUS Attributes for IEEE 802 Networks (更新版)
-  - IEEE 802 网络的 RADIUS 属性（更新版本）
-  - 文件：`rfc7268.txt`
-
-## 隧道和 VPN 支持
-
-- **RFC 2809** - Implementation of L2TP Compulsory Tunneling via RADIUS
-  - 通过 RADIUS 实现 L2TP 强制隧道
-  - 文件：`rfc2809.txt`
-
-## 高级特性
-
-- **RFC 4372** - Chargeable User Identity
-
-  - 可计费用户标识
-  - 文件：`rfc4372.txt`
-
-- **RFC 3576** - Dynamic Authorization Extensions to Remote Authentication Dial In User Service (RADIUS)
-
-  - RADIUS 动态授权扩展（早期版本）
-  - 文件：`rfc3576.txt`
-
-- **RFC 5176** - Dynamic Authorization Extensions to RADIUS
-
-  - RADIUS 动态授权扩展（CoA/Disconnect，更新版本）
-  - 文件：`rfc5176.txt`
-
-- **RFC 4675** - RADIUS Attributes for Virtual LAN and Priority Support
-  - RADIUS VLAN 和优先级支持属性
-  - 文件：`rfc4675.txt`
-
-## 认证扩展
-
-- **RFC 4590** - RADIUS Extension for Digest Authentication
-
-  - RADIUS 摘要认证扩展
-  - 文件：`rfc4590.txt`
-
-- **RFC 5090** - RADIUS Extension for Digest Authentication (更新版)
-  - RADIUS 摘要认证扩展（更新版本）
-  - 文件：`rfc5090.txt`
-
-## 目录服务认证 (LDAP/AD)
-
-- **RFC 4511** - Lightweight Directory Access Protocol (LDAP): The Protocol
-
-  - LDAP 核心协议，定义 Bind 操作（§4.2），用于以目录账号口令做绑定校验
-  - 关联实现：`TR-F025`（M14 LDAP/AD 认证后端，仅 PAP 族）
-  - 文件：`rfc4511-ldap-protocol.txt`
-
-- **RFC 4513** - LDAP: Authentication Methods and Security Mechanisms
-  - LDAP 认证方法与安全机制：§5.1.2 未认证绑定（空口令风险）、§3 StartTLS
-  - 关联实现：`TR-F025`（M14 LDAP/AD 认证后端）
-  - 文件：`rfc4513-ldap-authentication.txt`
-
-## 位置信息
-
-- **RFC 5580** - Carrying Location Objects in RADIUS and Diameter
-  - 在 RADIUS 和 Diameter 中携带位置对象
-  - 文件：`rfc5580.txt`
-
-## 移动网络支持
-
-- **RFC 6572** - RADIUS Support for Proxy Mobile IPv6
-  - RADIUS 对代理移动 IPv6 的支持
-  - 文件：`rfc6572.txt`
-
-## 安全传输
-
-- **RFC 6613** - RADIUS over TCP
-
-  - RADIUS over TCP（替代 UDP）
-  - 文件：`rfc6613.txt`
-
-- **RFC 6614** - Transport Layer Security (TLS) Encryption for RADIUS
-
-  - RADIUS over TLS (RadSec)，提供加密传输
-  - 文件：`rfc6614.txt`
-
-- **RFC 7585** - Dynamic Peer Discovery for RADIUS/TLS and RADIUS/DTLS Based on the Network Access Identifier (NAI)
-  - 基于 NAI 的 RADIUS/TLS 和 RADIUS/DTLS 动态对等发现
-  - 文件：`rfc7585.txt`
-
-## 实现指南
-
-- **RFC 5080** - Common Remote Authentication Dial In User Service (RADIUS) Implementation Issues and Suggested Fixes
-  - RADIUS 常见实现问题和建议修复方案
-  - 文件：`rfc5080.txt`
-
-## Diameter 协议（RADIUS 继任者）
-
-- **RFC 7155** - Diameter Network Access Server Application
-  - Diameter 网络接入服务器应用（RADIUS 的演进版本）
-  - 文件：`rfc7155.txt`
-
-## 使用说明
-
-所有文档均为纯文本格式（.txt），可使用任何文本编辑器查看。
-
-### ToughRADIUS 实现参考
-
-ToughRADIUS 主要实现了以下 RFC 规范：
-
-#### 已实现 - 核心协议
-
-- ✅ RFC 2865 - RADIUS 核心认证协议
-- ✅ RFC 2866 - RADIUS 计费协议
-- ✅ RFC 2869 - RADIUS 扩展
-
-#### 已实现 - EAP 支持
-
-- ✅ RFC 3748 - EAP 核心协议
-- ✅ RFC 3579 - RADIUS EAP 支持
-- ✅ RFC 5216 - EAP-TLS
-- ✅ RFC 9190 - EAP-TLS 1.3（TLS 1.3 协商 + 受保护成功指示，TLS 1.2 回退兼容）
-- ✅ RFC 2759 - MS-CHAP-V2 (用于 EAP-MSCHAPv2)
-
-#### 已实现 - 高级功能
-
-- ✅ RFC 6614 - RadSec (RADIUS over TLS)
-- ✅ RFC 5176 - 动态授权（CoA/Disconnect，部分支持）
-- ✅ RFC 2548 - Microsoft 厂商属性
-- ✅ RFC 4675 - VLAN 支持
-
-#### 计划支持
-
-- 🔄 RFC 5281 - EAP-TTLS
-- 🔄 RFC 7170 - TEAP
-- 🔄 RFC 4186 - EAP-SIM
-- 🔄 RFC 4187 - EAP-AKA
-- 🔄 RFC 6613 - RADIUS over TCP
-- 🔄 RFC 7499 - RADIUS 数据包分片
-
-### 在线查看
-
-您也可以在 IETF 官网在线查看这些 RFC 文档：
-<https://www.rfc-editor.org/rfc/>
-
-### RFC 文档分类汇总
-
-| 分类            | 数量   | 说明                                                     |
-| --------------- | ------ | -------------------------------------------------------- |
-| 核心协议        | 2      | RFC 2865, 2866                                           |
-| 扩展协议        | 5      | RFC 2867, 2868, 2869, 6929, 7499                         |
-| NAS 支持        | 2      | RFC 2882, 5607                                           |
-| IPv6 支持       | 7      | RFC 3162, 4818, 5997, 6519, 6911, 6930, 5969             |
-| EAP 核心        | 3      | RFC 2284, 3748, 5247                                     |
-| RADIUS-EAP 集成 | 2      | RFC 3579, 3580                                           |
-| EAP 认证方法    | 10     | RFC 3851, 5216, 5281, 4186, 4187, 4764, 5448, 7170, 7542, 9190 |
-| EAP 扩展        | 1      | RFC 6124                                                 |
-| 厂商特定        | 3      | RFC 2548, 2759, 4679                                     |
-| IEEE 802 网络   | 2      | RFC 5904, 7268                                           |
-| 隧道/VPN        | 1      | RFC 2809                                                 |
-| 高级特性        | 4      | RFC 4372, 3576, 5176, 4675                               |
-| 认证扩展        | 2      | RFC 4590, 5090                                           |
-| 位置信息        | 1      | RFC 5580                                                 |
-| 移动网络        | 1      | RFC 6572                                                 |
-| 安全传输        | 3      | RFC 6613, 6614, 7585                                     |
-| 实现指南        | 1      | RFC 5080                                                 |
-| Diameter        | 1      | RFC 7155                                                 |
-| **总计**        | **50** |                                                          |
-
-## 文档更新
-
-最后更新时间：2025-11-10
-
-如需下载其他 RADIUS 相关 RFC 文档，请访问：
-<https://www.rfc-editor.org/search/rfc_search_detail.php?title=RADIUS>
-
-## 重要 EAP 认证方法说明
-
-### 常用 EAP 方法
-
-1. **EAP-TLS (RFC 5216)** - 最安全，需要客户端证书
-2. **EAP-TTLS (RFC 5281)** - 隧道方式，服务器证书 + 用户名密码
-3. **EAP-MSCHAPv2 (基于 RFC 2759)** - 常与 PEAP 配合使用
-4. **TEAP (RFC 7170)** - 新一代隧道 EAP，Cisco 推动
-
-### 移动网络 EAP 方法
-
-1. **EAP-SIM (RFC 4186)** - GSM SIM 卡认证
-2. **EAP-AKA (RFC 4187)** - 3G/4G USIM 卡认证
-3. **EAP-AKA' (RFC 5448)** - 改进的 EAP-AKA
-
-### 其他 EAP 方法
-
-1. **EAP-PSK (RFC 4764)** - 预共享密钥
-2. **EAP-PWD (RFC 7542)** - 基于密码
-3. **EAP-MD5 (RFC 3851)** - 不安全，不推荐生产环境使用
-
-## 厂商特定扩展说明
-
-### Microsoft 扩展
-
-- **RFC 2548** - Microsoft 专有 RADIUS 属性
-
-  - 包含 MS-CHAP 相关属性
-  - MS-MPPE 加密密钥属性
-  - Windows 域控集成相关属性
-
-- **RFC 2759** - MS-CHAP-V2 协议
-  - Windows 环境下广泛使用
-  - 与 EAP-MSCHAPv2 相关
-
-### DSL/宽带厂商
-
-- **RFC 4679** - DSL Forum 属性
-  - PPPoE 场景常用
-  - 宽带接入服务提供商使用
-  - 包含线路信息、速率限制等属性
-
-### IEEE 802 网络（Wi-Fi）
-
-- **RFC 5904/7268** - IEEE 802 网络属性
-  - 无线网络 (Wi-Fi) 管理
-  - VLAN 分配
-  - QoS 策略
-  - 802.11 特定参数
-
-## 实用工具脚本
-
-本目录包含自动下载脚本 `download-rfcs.sh`，可用于更新或重新下载所有 RFC 文档：
-
-```bash
-cd docs/rfcs
-./download-rfcs.sh
-```
-
-脚本特性：
-
-- ✅ 自动下载所有 50 个 RFC 文档
-- ✅ 跳过已存在的文件（增量更新）
-- ✅ 显示下载进度和统计信息
-- ✅ 从官方 IETF RFC 编辑器网站下载
+# RFC Reference Library
+
+Local copies of the RFCs this project implements or references. Files are named
+`rfc<number>-<topic>.txt`. Full text: <https://www.rfc-editor.org/>.
+
+| RFC | Topic | File |
+| --- | --- | --- |
+| [2284](https://www.rfc-editor.org/rfc/rfc2284) | EAP obsolete | [rfc2284-eap-obsolete.txt](rfc2284-eap-obsolete.txt) |
+| [2548](https://www.rfc-editor.org/rfc/rfc2548) | Microsoft VSA | [rfc2548-microsoft-vsa.txt](rfc2548-microsoft-vsa.txt) |
+| [2759](https://www.rfc-editor.org/rfc/rfc2759) | MSCHAPV2 | [rfc2759-mschapv2.txt](rfc2759-mschapv2.txt) |
+| [2809](https://www.rfc-editor.org/rfc/rfc2809) | L2TP tunneling | [rfc2809-l2tp-tunneling.txt](rfc2809-l2tp-tunneling.txt) |
+| [2865](https://www.rfc-editor.org/rfc/rfc2865) | RADIUS authentication | [rfc2865-radius-authentication.txt](rfc2865-radius-authentication.txt) |
+| [2866](https://www.rfc-editor.org/rfc/rfc2866) | RADIUS accounting | [rfc2866-radius-accounting.txt](rfc2866-radius-accounting.txt) |
+| [2867](https://www.rfc-editor.org/rfc/rfc2867) | RADIUS tunnel accounting | [rfc2867-radius-tunnel-accounting.txt](rfc2867-radius-tunnel-accounting.txt) |
+| [2868](https://www.rfc-editor.org/rfc/rfc2868) | RADIUS tunnel attributes | [rfc2868-radius-tunnel-attributes.txt](rfc2868-radius-tunnel-attributes.txt) |
+| [2869](https://www.rfc-editor.org/rfc/rfc2869) | RADIUS extensions | [rfc2869-radius-extensions.txt](rfc2869-radius-extensions.txt) |
+| [2882](https://www.rfc-editor.org/rfc/rfc2882) | NAS requirements | [rfc2882-nas-requirements.txt](rfc2882-nas-requirements.txt) |
+| [3162](https://www.rfc-editor.org/rfc/rfc3162) | RADIUS IPV6 | [rfc3162-radius-ipv6.txt](rfc3162-radius-ipv6.txt) |
+| [3576](https://www.rfc-editor.org/rfc/rfc3576) | Dynamic authorization | [rfc3576-dynamic-authorization.txt](rfc3576-dynamic-authorization.txt) |
+| [3579](https://www.rfc-editor.org/rfc/rfc3579) | RADIUS EAP support | [rfc3579-radius-eap-support.txt](rfc3579-radius-eap-support.txt) |
+| [3580](https://www.rfc-editor.org/rfc/rfc3580) | IEEE8021X RADIUS | [rfc3580-ieee8021x-radius.txt](rfc3580-ieee8021x-radius.txt) |
+| [3748](https://www.rfc-editor.org/rfc/rfc3748) | EAP | [rfc3748-eap.txt](rfc3748-eap.txt) |
+| [3851](https://www.rfc-editor.org/rfc/rfc3851) | EAP MD5 | [rfc3851-eap-md5.txt](rfc3851-eap-md5.txt) |
+| [4186](https://www.rfc-editor.org/rfc/rfc4186) | EAP SIM | [rfc4186-eap-sim.txt](rfc4186-eap-sim.txt) |
+| [4187](https://www.rfc-editor.org/rfc/rfc4187) | EAP AKA | [rfc4187-eap-aka.txt](rfc4187-eap-aka.txt) |
+| [4372](https://www.rfc-editor.org/rfc/rfc4372) | Chargeable user identity | [rfc4372-chargeable-user-identity.txt](rfc4372-chargeable-user-identity.txt) |
+| [4511](https://www.rfc-editor.org/rfc/rfc4511) | LDAP protocol | [rfc4511-ldap-protocol.txt](rfc4511-ldap-protocol.txt) |
+| [4513](https://www.rfc-editor.org/rfc/rfc4513) | LDAP authentication | [rfc4513-ldap-authentication.txt](rfc4513-ldap-authentication.txt) |
+| [4590](https://www.rfc-editor.org/rfc/rfc4590) | Digest authentication | [rfc4590-digest-authentication.txt](rfc4590-digest-authentication.txt) |
+| [4675](https://www.rfc-editor.org/rfc/rfc4675) | VLAN priority support | [rfc4675-vlan-priority-support.txt](rfc4675-vlan-priority-support.txt) |
+| [4679](https://www.rfc-editor.org/rfc/rfc4679) | DSL forum VSA | [rfc4679-dsl-forum-vsa.txt](rfc4679-dsl-forum-vsa.txt) |
+| [4764](https://www.rfc-editor.org/rfc/rfc4764) | EAP PSK | [rfc4764-eap-psk.txt](rfc4764-eap-psk.txt) |
+| [4818](https://www.rfc-editor.org/rfc/rfc4818) | IPV6 prefix delegation | [rfc4818-ipv6-prefix-delegation.txt](rfc4818-ipv6-prefix-delegation.txt) |
+| [5080](https://www.rfc-editor.org/rfc/rfc5080) | Implementation issues | [rfc5080-implementation-issues.txt](rfc5080-implementation-issues.txt) |
+| [5090](https://www.rfc-editor.org/rfc/rfc5090) | Digest auth updated | [rfc5090-digest-auth-updated.txt](rfc5090-digest-auth-updated.txt) |
+| [5176](https://www.rfc-editor.org/rfc/rfc5176) | COA disconnect | [rfc5176-coa-disconnect.txt](rfc5176-coa-disconnect.txt) |
+| [5216](https://www.rfc-editor.org/rfc/rfc5216) | EAP TLS | [rfc5216-eap-tls.txt](rfc5216-eap-tls.txt) |
+| [5247](https://www.rfc-editor.org/rfc/rfc5247) | EAP key management | [rfc5247-eap-key-management.txt](rfc5247-eap-key-management.txt) |
+| [5281](https://www.rfc-editor.org/rfc/rfc5281) | EAP TTLS | [rfc5281-eap-ttls.txt](rfc5281-eap-ttls.txt) |
+| [5448](https://www.rfc-editor.org/rfc/rfc5448) | EAP ikev2 AKA prime | [rfc5448-eap-ikev2-aka-prime.txt](rfc5448-eap-ikev2-aka-prime.txt) |
+| [5580](https://www.rfc-editor.org/rfc/rfc5580) | Location objects | [rfc5580-location-objects.txt](rfc5580-location-objects.txt) |
+| [5607](https://www.rfc-editor.org/rfc/rfc5607) | NAS management | [rfc5607-nas-management.txt](rfc5607-nas-management.txt) |
+| [5904](https://www.rfc-editor.org/rfc/rfc5904) | IEEE802 attributes | [rfc5904-ieee802-attributes.txt](rfc5904-ieee802-attributes.txt) |
+| [5969](https://www.rfc-editor.org/rfc/rfc5969) | IPV6 6RD | [rfc5969-ipv6-6rd.txt](rfc5969-ipv6-6rd.txt) |
+| [5997](https://www.rfc-editor.org/rfc/rfc5997) | Status server | [rfc5997-status-server.txt](rfc5997-status-server.txt) |
+| [6124](https://www.rfc-editor.org/rfc/rfc6124) | EAP EKE | [rfc6124-eap-eke.txt](rfc6124-eap-eke.txt) |
+| [6431](https://www.rfc-editor.org/rfc/rfc6431) | Huawei IPCP port range | [rfc6431-huawei-ipcp-port-range.txt](rfc6431-huawei-ipcp-port-range.txt) |
+| [6519](https://www.rfc-editor.org/rfc/rfc6519) | Dual stack lite | [rfc6519-dual-stack-lite.txt](rfc6519-dual-stack-lite.txt) |
+| [6572](https://www.rfc-editor.org/rfc/rfc6572) | Proxy mobile IPV6 | [rfc6572-proxy-mobile-ipv6.txt](rfc6572-proxy-mobile-ipv6.txt) |
+| [6613](https://www.rfc-editor.org/rfc/rfc6613) | RADIUS over TCP | [rfc6613-radius-over-tcp.txt](rfc6613-radius-over-tcp.txt) |
+| [6614](https://www.rfc-editor.org/rfc/rfc6614) | Radsec | [rfc6614-radsec.txt](rfc6614-radsec.txt) |
+| [6911](https://www.rfc-editor.org/rfc/rfc6911) | IPV6 access networks | [rfc6911-ipv6-access-networks.txt](rfc6911-ipv6-access-networks.txt) |
+| [6929](https://www.rfc-editor.org/rfc/rfc6929) | Protocol extensions | [rfc6929-protocol-extensions.txt](rfc6929-protocol-extensions.txt) |
+| [6930](https://www.rfc-editor.org/rfc/rfc6930) | IPV6 rapid deployment | [rfc6930-ipv6-rapid-deployment.txt](rfc6930-ipv6-rapid-deployment.txt) |
+| [7155](https://www.rfc-editor.org/rfc/rfc7155) | Diameter NAS | [rfc7155-diameter-nas.txt](rfc7155-diameter-nas.txt) |
+| [7170](https://www.rfc-editor.org/rfc/rfc7170) | TEAP | [rfc7170-teap.txt](rfc7170-teap.txt) |
+| [7268](https://www.rfc-editor.org/rfc/rfc7268) | IEEE802 attributes updated | [rfc7268-ieee802-attributes-updated.txt](rfc7268-ieee802-attributes-updated.txt) |
+| [7499](https://www.rfc-editor.org/rfc/rfc7499) | Packet fragmentation | [rfc7499-packet-fragmentation.txt](rfc7499-packet-fragmentation.txt) |
+| [7542](https://www.rfc-editor.org/rfc/rfc7542) | EAP PWD | [rfc7542-eap-pwd.txt](rfc7542-eap-pwd.txt) |
+| [7585](https://www.rfc-editor.org/rfc/rfc7585) | Dynamic peer discovery | [rfc7585-dynamic-peer-discovery.txt](rfc7585-dynamic-peer-discovery.txt) |
+| [8157](https://www.rfc-editor.org/rfc/rfc8157) | Huawei GRE tunnel bonding | [rfc8157-huawei-gre-tunnel-bonding.txt](rfc8157-huawei-gre-tunnel-bonding.txt) |
+| [8772](https://www.rfc-editor.org/rfc/rfc8772) | Huawei BNG s CUSP | [rfc8772-huawei-bng-s-cusp.txt](rfc8772-huawei-bng-s-cusp.txt) |
+| [9190](https://www.rfc-editor.org/rfc/rfc9190) | EAP tls13 | [rfc9190-eap-tls13.txt](rfc9190-eap-tls13.txt) |

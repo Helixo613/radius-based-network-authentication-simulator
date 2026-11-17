@@ -17,14 +17,8 @@ const (
 		`\d{7,8}` + // serial number
 		`(-\d{1,4})?` // The extension number, extension number connection symbol cannot be omitted.
 
-	// Matching china Mobile
-	cnMobileStr = `(0|\+?86)?` + // Match 0,86,+86
-		`(13[0-9]|` + // 130-139
-		`14[57]|` + // 145,147
-		`15[0-35-9]|` + // 150-153,155-159
-		`17[0678]|` + // 170,176,177,17u
-		`18[0-9])` + // 180-189
-		`[0-9]{8}`
+	// International phone number: optional "+", 7-15 digits (E.164 length)
+	phoneStr = `^\+?[0-9]{7,15}$`
 
 	// Match email
 	emailStr = `[\w.-]+@[\w_-]+\w{1,}[\.\w-]+`
@@ -63,13 +57,13 @@ func regexpCompile(str string) *regexp.Regexp {
 }
 
 var (
-	email    = regexpCompile(emailStr)
-	ip4      = regexpCompile(ip4Str)
-	ip6      = regexpCompile(ip6Str)
-	ip       = regexpCompile(ipStr)
-	url      = regexpCompile(urlStr)
-	cnPhone  = regexpCompile(cnPhoneStr)
-	cnMobile = regexpCompile(cnMobileStr)
+	email   = regexpCompile(emailStr)
+	ip4     = regexpCompile(ip4Str)
+	ip6     = regexpCompile(ip6Str)
+	ip      = regexpCompile(ipStr)
+	url     = regexpCompile(urlStr)
+	cnPhone = regexpCompile(cnPhoneStr)
+	phone   = regexpCompile(phoneStr)
 )
 
 // Determine if val can match the regular expression in exp correctly.
@@ -93,9 +87,10 @@ func IsCnPhone(val interface{}) bool {
 	return isMatch(cnPhone, val)
 }
 
-// IsCnMobile reports whether val matches a mainland China mobile number.
-func IsCnMobile(val interface{}) bool {
-	return isMatch(cnMobile, val)
+// IsPhone reports whether val is an international phone number:
+// optional leading "+", then 7-15 digits (E.164 length).
+func IsPhone(val interface{}) bool {
+	return isMatch(phone, val)
 }
 
 // IsURL reports whether val matches the accepted URL pattern.

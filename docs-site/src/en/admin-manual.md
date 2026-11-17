@@ -1,9 +1,7 @@
 # Admin UI Manual
 
-> 中文版本：[管理系统用户手册](../zh/admin-manual.md)
-
 The management console runs on port `1816` (HTTP) and is built with React
-Admin. It is bilingual (中文 default, English via the app-bar language menu) and
+Admin. It is English-only and
 supports light/dark themes. This chapter walks through every page.
 
 ## Logging in and accounts
@@ -97,9 +95,9 @@ and start-time ranges.
 
 Per-row actions (this is where RFC 5176 dynamic authorization lives):
 
-- **修改授权 / CoA** — send a `CoA-Request` with a new session timeout and/or
+- **Change Authorization / CoA** — send a `CoA-Request` with a new session timeout and/or
   `Filter-Id`.
-- **强制下线 / Disconnect** — send a `Disconnect-Request` to terminate the
+- **Force Offline / Disconnect** — send a `Disconnect-Request` to terminate the
   session (with confirmation).
 
 Both target the NAS CoA port and report success/failure as a notification.
@@ -147,7 +145,6 @@ contact info, level, status. The operator action log is kept in the database
 
 ## UI conveniences
 
-- **Language switcher** (app bar) — 简体中文 / English, persisted per browser.
 - **Theme toggle** — light/dark.
 - **CSV export** on users, sessions, accounting, NAS, nodes, operators.
 - Server-side pagination and active-filter chips on all list pages.

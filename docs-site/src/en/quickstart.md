@@ -1,7 +1,5 @@
 # Quick Start
 
-> 中文版本：[快速开始](../zh/quickstart.md)
-
 This chapter takes you from nothing to a working RADIUS server with one test
 user, then shows how to debug what the server is doing. Default ports: web UI
 `1816`, RADIUS authentication UDP `1812`, accounting UDP `1813`, RadSec TCP

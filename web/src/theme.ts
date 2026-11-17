@@ -1,6 +1,6 @@
 import { alpha, createTheme, PaletteMode } from '@mui/material/styles';
 
-// 浅色主题配色
+// Light theme palette
 const lightPalette = {
   primary: {
     main: '#2563eb',
@@ -46,7 +46,7 @@ const lightPalette = {
   divider: 'rgba(100, 116, 139, 0.12)',
 };
 
-// 深色主题配色
+// Dark theme palette
 const darkPalette = {
   primary: {
     main: '#3b82f6',
@@ -93,8 +93,8 @@ const darkPalette = {
 };
 
 /**
- * 创建主题配置
- * @param mode 主题模式：'light' | 'dark'
+ * Create theme config
+ * @param mode Theme mode:'light' | 'dark'
  */
 export const createAppTheme = (mode: PaletteMode) => {
   const isDark = mode === 'dark';
@@ -179,7 +179,7 @@ export const createAppTheme = (mode: PaletteMode) => {
               background: isDark ? '#64748b' : '#94a3b8',
             },
           },
-          // 强制菜单图标始终使用浅色
+          // Force menu icons to always be light
           '.RaMenuItemLink-icon': {
             color: 'rgba(255, 255, 255, 0.85) !important',
           },
@@ -279,7 +279,7 @@ export const createAppTheme = (mode: PaletteMode) => {
       MuiAppBar: {
         styleOverrides: {
           root: {
-            // 浅色主题使用纯白背景，深色主题使用深色
+            // Light theme uses a white background, dark theme uses dark
             backgroundColor: isDark ? '#1e293b' : '#ffffff',
             color: isDark ? '#f1f5f9' : '#1f2937',
             borderBottom: isDark 
@@ -295,7 +295,7 @@ export const createAppTheme = (mode: PaletteMode) => {
       MuiDrawer: {
         styleOverrides: {
           paper: {
-            // 浅色主题使用深蓝色系，深色主题保持深灰
+            // Light theme uses dark blue, dark theme stays dark grey
             backgroundColor: isDark ? '#1e293b' : '#1e40af',
             borderRight: 'none',
             transition: 'all 0.3s ease',
@@ -338,7 +338,7 @@ export const createAppTheme = (mode: PaletteMode) => {
             marginBlock: 3,
             paddingBlock: 8,
             paddingInline: 12,
-            // 菜单项始终使用浅色文字
+            // Menu items always use light text
             color: 'rgba(255, 255, 255, 0.9) !important',
             transition: 'all 0.2s ease',
             '& .RaMenuItemLink-label': {
@@ -374,7 +374,7 @@ export const createAppTheme = (mode: PaletteMode) => {
             },
           },
           icon: {
-            // 菜单图标始终使用浅色，添加 !important 确保优先级
+            // Menu icons always light; !important ensures priority
             color: 'rgba(255, 255, 255, 0.85) !important',
             transition: 'all 0.2s ease',
           },
@@ -392,7 +392,7 @@ export const createAppTheme = (mode: PaletteMode) => {
         styleOverrides: {
           root: {
             backgroundColor: palette.background.paper,
-            // 统一表格边距
+            // Consistent table padding
             '& .MuiTableContainer-root': {
               padding: '0 8px',
             },
@@ -438,7 +438,7 @@ export const createAppTheme = (mode: PaletteMode) => {
             '& .RaDatagrid-clickableRow': {
               cursor: 'pointer',
             },
-            // 复选框列统一宽度
+            // Consistent checkbox column width
             '& .RaDatagrid-checkbox': {
               padding: '8px 8px 8px 16px',
               width: 48,
@@ -454,8 +454,8 @@ export const createAppTheme = (mode: PaletteMode) => {
   });
 };
 
-// 默认导出浅色主题（向后兼容）
+// Default export is the light theme (backward compatible)
 export const theme = createAppTheme('light');
 
-// 深色主题
+// Dark theme
 export const darkTheme = createAppTheme('dark');

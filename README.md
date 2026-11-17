@@ -203,11 +203,11 @@ Production mode (`system.debug=false` or `logger.mode=production`) refuses to st
 
 - 📚 **[Bilingual Handbook (mdbook)](https://www.toughradius.net/)** - CN/EN documentation site (source in [`docs-site/`](docs-site/)) consolidating the overview, security policy, RFC reference, and more; built, link-checked, and deployed to GitHub Pages by CI
 - [Roadmap](docs/roadmap.md) - Milestones and the EAP suite delivery plan (EAP-TLS / PEAP / TTLS, with TLS 1.3, TEAP, EAP-PWD tracked)
-- [Feature Checklist](docs/feature-checklist.md) / [English](docs/feature-checklist.en.md) - Product scope baseline for aligning future development with feature IDs and avoiding uncontrolled direction changes
+- [Feature Checklist](docs/feature-checklist.md) - Product scope baseline for aligning future development with feature IDs and avoiding uncontrolled direction changes
 - [Overview](docs-site/src/en/overview.md) / [Concepts & Terminology](docs-site/src/en/concepts.md) - Current architecture, service model, and AAA concepts
 - [Admin UI Manual](docs-site/src/en/admin-manual.md) - React Admin management interface, pages, roles, and workflows
 - [Operations Guide](docs-site/src/en/ops-guide.md) - Production configuration, environment variables, SQLite/PostgreSQL storage, backup, and runtime operations
-- [Documentation Map](docs-site/src/en/documentation-map.md) / [中文](docs-site/src/zh/documentation-map.md) - Canonical map for handbook chapters and repository documents
+- [Documentation Map](docs-site/src/en/documentation-map.md) - Canonical map for handbook chapters and repository documents
 
 ## 🏗️ Project Structure
 

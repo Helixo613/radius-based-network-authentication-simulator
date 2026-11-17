@@ -34,7 +34,7 @@ view docs/rfcs/rfc5216-eap-tls.txt
 ## Backfill when missing locally
 1. Confirm it is truly missing (`ls docs/rfcs/ | grep <number>`).
 2. Fetch the spec text from an authoritative source (IETF datatracker / rfc-editor).
-3. Save it per `docs/rfcs/FILE-NAMING.md` (e.g. `rfcXXXX-<slug>.txt`).
+3. Save it as `rfcXXXX-<slug>.txt` and add it to `docs/rfcs/README.md`.
 4. Update the `docs/rfcs/README.md` index, noting the implemented or to-be-implemented feature ID.
 
 ## How to cite

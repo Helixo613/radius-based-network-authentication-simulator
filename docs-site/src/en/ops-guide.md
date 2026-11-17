@@ -1,7 +1,5 @@
 # Operations Guide
 
-> 中文版本：[运维指南](../zh/ops-guide.md)
-
 Everything you need to run ToughRADIUS in production: configuration reference,
 environment variables, TLS/EAP certificates, storage, monitoring, backup, and
 the bundled command-line tools.

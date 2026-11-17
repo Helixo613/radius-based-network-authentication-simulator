@@ -1,7 +1,5 @@
 # Vendor Integration Guide
 
-> 中文版本：[厂商对接指南](../zh/vendor-guide.md)
-
 ToughRADIUS speaks standard RADIUS to every device and adds **vendor-specific
 attributes (VSAs)** for the vendors it knows. This chapter walks through the
 integration steps shared by all devices, then gives a case study per vendor:
@@ -185,7 +183,7 @@ template to the server address, secret, and ports 1812/1813.
 
 Popular SMB gateway in China. ToughRADIUS sends
 `RP-Upstream-Speed-Limit` / `RP-Downstream-Speed-Limit` (= `rate_kbps × 8192`,
-clamped). On the iKuai web console: **认证计费 → RADIUS 计费** — set the server
+clamped). On the iKuai web console: **Authentication & Billing → RADIUS Accounting** — set the server
 address, ports 1812/1813, and the shared secret; enable RADIUS in the PPPoE
 server settings.
 

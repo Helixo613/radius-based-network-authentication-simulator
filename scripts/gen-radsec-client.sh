@@ -52,28 +52,28 @@ NC='\033[0m' # No Color
 # Display help information
 show_help() {
     cat << EOF
-ToughRADIUS RadSec 客户端证书生成脚本
+ToughRADIUS RadSec Client certificate generation script
 
-用法:
-    $0 <客户端名称> [选项]
+Usage:
+    $0 <Client name> [Options]
 
-参数:
-    客户端名称      客户端标识符（必需）
+Arguments:
+    Client name      client identifier (required)
 
-选项:
-    -d DIR          CA 证书目录 (默认: ./rundata/private)
-    -o DIR          客户端证书输出目录 (默认: ./rundata/private/clients)
-    -n HOST         客户端主机名 (默认: 使用客户端名称)
-    -i IPS          客户端 IP 地址，逗号分隔 (可选)
-    -y DAYS         证书有效期天数 (默认: 3650)
-    -g ORG          组织名称 (默认: ToughRADIUS)
-    -c COUNTRY      国家代码 (默认: CN)
-    -p PROVINCE     省份 (默认: Shanghai)
-    -l LOCALITY     城市 (默认: Shanghai)
-    -u UNIT         组织单元 (默认: IT)
-    -h              显示此帮助信息
+Options:
+    -d DIR          CA certificate directory (default: ./rundata/private)
+    -o DIR          Client certificate output directory (default: ./rundata/private/clients)
+    -n HOST         Client hostname (default: client name)
+    -i IPS          Client IP addresses, comma separated (optional)
+    -y DAYS         Certificate validity in days (default: 3650)
+    -g ORG          Organization name (default: ToughRADIUS)
+    -c COUNTRY      Country code (default: CN)
+    -p PROVINCE     State/province (default: Shanghai)
+    -l LOCALITY     City (default: Shanghai)
+    -u UNIT         Organizational unit (default: IT)
+    -h              Show this help
 
-示例:
+Examples:
     # Basic usage - generate a certificate for a NAS device
     $0 nas01
 
@@ -86,13 +86,13 @@ ToughRADIUS RadSec 客户端证书生成脚本
     # Customize all parameters
     $0 branch-radius -d ./certs -o ./certs/clients -n branch.example.com -y 365
 
-前提条件:
-    必须先运行 gen-radsec-certs.sh 生成 CA 证书
-    CA 目录中必须存在: ca.crt 和 ca.key
+Prerequisites:
+    Run gen-radsec-certs.sh first to create the CA certificate
+    CA directory must contain: ca.crt and ca.key
 
-生成的文件:
-    <客户端名称>.crt    - 客户端证书（公钥）
-    <客户端名称>.key    - 客户端私钥
+Generated files:
+    <Client name>.crt    - Client certificate (public key)
+    <Client name>.key    - Client private key
 
 EOF
 }
@@ -149,7 +149,7 @@ while [[ $# -gt 0 ]]; do
             exit 0
         ;;
         -*)
-            echo -e "${RED}错误: 无效选项 $1${NC}" >&2
+            echo -e "${RED} Error: invalid option $1${NC}" >&2
             show_help
             exit 1
         ;;
@@ -157,7 +157,7 @@ while [[ $# -gt 0 ]]; do
             if [ -z "$CLIENT_NAME" ]; then
                 CLIENT_NAME="$1"
             else
-                echo -e "${RED}错误: 多余的参数 '$1'${NC}" >&2
+                echo -e "${RED} Error: unexpected argument '$1'${NC}" >&2
                 show_help
                 exit 1
             fi
@@ -168,7 +168,7 @@ done
 
 # Validate the client name
 if [ -z "$CLIENT_NAME" ]; then
-    echo -e "${RED}错误: 必须指定客户端名称${NC}" >&2
+    echo -e "${RED} Error: client name is required ${NC}" >&2
     echo ""
     show_help
     exit 1
@@ -181,10 +181,10 @@ fi
 
 # Verify that the CA certificate exists
 if [ ! -f "$CA_DIR/ca.crt" ] || [ ! -f "$CA_DIR/ca.key" ]; then
-    echo -e "${RED}错误: CA 证书不存在${NC}"
-    echo "请先运行 gen-radsec-certs.sh 生成 CA 证书"
+    echo -e "${RED} Error: CA certificate not found ${NC}"
+    echo "Run gen-radsec-certs.sh first to create the CA certificate"
     echo ""
-    echo "CA 证书路径:"
+    echo "CA certificate path:"
     echo "  $CA_DIR/ca.crt"
     echo "  $CA_DIR/ca.key"
     exit 1
@@ -192,21 +192,21 @@ fi
 
 # Print configuration information
 echo -e "${BLUE}========================================${NC}"
-echo -e "${BLUE}  ToughRADIUS RadSec 客户端证书生成${NC}"
+echo -e "${BLUE}  ToughRADIUS RadSec Client certificate generation ${NC}"
 echo -e "${BLUE}========================================${NC}"
 echo ""
-echo -e "${GREEN}配置信息:${NC}"
-echo -e "  客户端名称:   ${YELLOW}$CLIENT_NAME${NC}"
-echo -e "  客户端主机名: ${YELLOW}$CLIENT_HOST${NC}"
+echo -e "${GREEN} Configuration:${NC}"
+echo -e "  Client name:   ${YELLOW}$CLIENT_NAME${NC}"
+echo -e "  Client hostname: ${YELLOW}$CLIENT_HOST${NC}"
 if [ -n "$CLIENT_IPS" ]; then
-    echo -e "  客户端 IP:    ${YELLOW}$CLIENT_IPS${NC}"
+    echo -e "  Client IP:    ${YELLOW}$CLIENT_IPS${NC}"
 else
-    echo -e "  客户端 IP:    ${YELLOW}(未指定)${NC}"
+    echo -e "  Client IP:    ${YELLOW}(not specified)${NC}"
 fi
-echo -e "  CA 目录:      ${YELLOW}$CA_DIR${NC}"
-echo -e "  输出目录:     ${YELLOW}$OUTPUT_DIR${NC}"
-echo -e "  有效期:       ${YELLOW}$VALID_DAYS 天${NC}"
-echo -e "  组织名称:     ${YELLOW}$ORGANIZATION${NC}"
+echo -e "  CA directory:      ${YELLOW}$CA_DIR${NC}"
+echo -e "  Output directory:     ${YELLOW}$OUTPUT_DIR${NC}"
+echo -e "  Validity:       ${YELLOW}$VALID_DAYS days ${NC}"
+echo -e "  Organization:     ${YELLOW}$ORGANIZATION${NC}"
 echo ""
 
 # Create the output directory
@@ -214,17 +214,17 @@ mkdir -p "$OUTPUT_DIR"
 
 # Check whether the certgen tool exists
 if ! command -v go &> /dev/null; then
-    echo -e "${RED}错误: 未找到 Go 工具链${NC}"
-    echo "请先安装 Go: https://golang.org/dl/"
+    echo -e "${RED} Error: Go toolchain not found ${NC}"
+    echo "Please install Go: https://golang.org/dl/"
     exit 1
 fi
 
 # Build the certgen tool if necessary
 CERTGEN_BIN="./certgen"
 if [ ! -f "$CERTGEN_BIN" ]; then
-    echo -e "${YELLOW}正在构建 certgen 工具...${NC}"
+    echo -e "${YELLOW} Building certgen tool...${NC}"
     go build -o "$CERTGEN_BIN" ./cmd/certgen
-    echo -e "${GREEN}✓ certgen 工具构建完成${NC}"
+    echo -e "${GREEN}✓ certgen tool built ${NC}"
     echo ""
 fi
 
@@ -234,7 +234,7 @@ DNS_NAMES="${CLIENT_HOST},localhost"
 # If the output directory differs from the CA directory, copy CA certificates there first
 # Because certgen reads CA certificates from the output directory
 if [ "$OUTPUT_DIR" != "$CA_DIR" ]; then
-    echo -e "${YELLOW}复制 CA 证书到输出目录...${NC}"
+    echo -e "${YELLOW} Copy CA certificate to output directory...${NC}"
     cp "$CA_DIR/ca.crt" "$OUTPUT_DIR/"
     cp "$CA_DIR/ca.key" "$OUTPUT_DIR/"
 fi
@@ -259,7 +259,7 @@ if [ -n "$CLIENT_IPS" ]; then
 fi
 
 # Generate the client certificate
-echo -e "${YELLOW}正在生成客户端证书...${NC}"
+echo -e "${YELLOW} Generating client certificate...${NC}"
 echo ""
 
 "$CERTGEN_BIN" "${CERTGEN_ARGS[@]}"
@@ -272,35 +272,35 @@ fi
 # Rename the client certificate files
 if [ -f "$OUTPUT_DIR/client.crt" ]; then
     mv "$OUTPUT_DIR/client.crt" "$OUTPUT_DIR/${CLIENT_NAME}.crt"
-    echo -e "${GREEN}✓ 客户端证书已重命名为 ${CLIENT_NAME}.crt${NC}"
+    echo -e "${GREEN}✓ Client certificate renamed to ${CLIENT_NAME}.crt${NC}"
 fi
 
 if [ -f "$OUTPUT_DIR/client.key" ]; then
     mv "$OUTPUT_DIR/client.key" "$OUTPUT_DIR/${CLIENT_NAME}.key"
-    echo -e "${GREEN}✓ 客户端私钥已重命名为 ${CLIENT_NAME}.key${NC}"
+    echo -e "${GREEN}✓ Client private key renamed to ${CLIENT_NAME}.key${NC}"
 fi
 
 echo ""
 echo -e "${BLUE}========================================${NC}"
-echo -e "${GREEN}✓ RadSec 客户端证书生成完成!${NC}"
+echo -e "${GREEN}✓ RadSec Client certificate generated!${NC}"
 echo -e "${BLUE}========================================${NC}"
 echo ""
-echo -e "${GREEN}生成的文件:${NC}"
-echo -e "  客户端证书: ${YELLOW}$OUTPUT_DIR/${CLIENT_NAME}.crt${NC}"
-echo -e "  客户端私钥: ${YELLOW}$OUTPUT_DIR/${CLIENT_NAME}.key${NC}"
+echo -e "${GREEN} Generated files:${NC}"
+echo -e "  Client certificate: ${YELLOW}$OUTPUT_DIR/${CLIENT_NAME}.crt${NC}"
+echo -e "  Client private key: ${YELLOW}$OUTPUT_DIR/${CLIENT_NAME}.key${NC}"
 echo ""
-echo -e "${YELLOW}注意事项:${NC}"
-echo -e "  1. 请妥善保管客户端私钥文件"
-echo -e "  2. 将证书和私钥部署到客户端设备"
-echo -e "  3. 客户端还需要 CA 证书进行验证:"
+echo -e "${YELLOW} Notes:${NC}"
+echo -e "  1. Keep the client private key file safe"
+echo -e "  2. Deploy the certificate and private key to the client device"
+echo -e "  3. The client also needs the CA certificate for verification:"
 echo -e "     ${BLUE}$CA_DIR/ca.crt${NC}"
 echo ""
-echo -e "${GREEN}证书有效期至: $(date -v+${VALID_DAYS}d '+%Y-%m-%d' 2>/dev/null || date -d "+${VALID_DAYS} days" '+%Y-%m-%d' 2>/dev/null || echo '无法计算')${NC}"
+echo -e "${GREEN} Certificate valid until: $(date -v+${VALID_DAYS}d '+%Y-%m-%d' 2>/dev/null || date -d "+${VALID_DAYS} days" '+%Y-%m-%d' 2>/dev/null || echo 'unable to compute')${NC}"
 echo ""
-echo -e "${YELLOW}客户端配置示例 (FreeRADIUS):${NC}"
+echo -e "${YELLOW} Client configuration example (FreeRADIUS):${NC}"
 echo -e "  ${BLUE}home_server radsec {${NC}"
 echo -e "    ${BLUE}type = auth+acct${NC}"
-echo -e "    ${BLUE}ipaddr = <服务器 IP>${NC}"
+echo -e "    ${BLUE}ipaddr = <Server IP>${NC}"
 echo -e "    ${BLUE}port = 2083${NC}"
 echo -e "    ${BLUE}proto = tcp${NC}"
 echo -e "    ${BLUE}secret = radsec${NC}"

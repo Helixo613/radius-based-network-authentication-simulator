@@ -8,8 +8,8 @@ export interface FormSectionProps {
 }
 
 /**
- * 表单分区组件
- * 用于将表单内容分组并添加标题和描述
+ * Form section component
+ * Groups form content with a title and description
  */
 export const FormSection = ({ title, description, children }: FormSectionProps) => (
   <Paper

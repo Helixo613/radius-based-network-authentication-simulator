@@ -1,7 +1,5 @@
 # Protocol & RFC Reference
 
-> 中文版本：[协议与 RFC 索引](../zh/rfc-index.md)
-
 ToughRADIUS implements standard RADIUS, EAP, dynamic-authorization, and
 secure-transport protocols. This chapter is the curated, implementation-oriented
 index of the standards the project relies on, with each RFC mapped to where it is

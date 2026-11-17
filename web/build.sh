@@ -4,14 +4,14 @@ set -e
 
 echo "Building ToughRADIUS v9 Web UI..."
 
-# 进入 web 目录
+# Enter the web directory
 cd "$(dirname "$0")"
 
-# 安装依赖
+# Install dependencies
 echo "Installing dependencies..."
 npm install
 
-# 构建生产版本
+# Build production bundle
 echo "Building production bundle..."
 npm run build
 

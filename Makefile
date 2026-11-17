@@ -1,106 +1,106 @@
 .PHONY: help build build-backend buildf runs runf dev clean test test-integration test-integration-pg test-eap-acceptance-docker initdb killfs version lint ci setup-hooks build-macos
 
-# 版本信息
+# Version info
 VERSION ?= $(shell git describe --tags --always --dirty 2>/dev/null || echo "develop")
 BUILD_TIME ?= $(shell date -u '+%Y-%m-%dT%H:%M:%SZ')
 GIT_COMMIT ?= $(shell git rev-parse --short HEAD 2>/dev/null || echo "unknown")
 LDFLAGS := -s -w -X main.Version=$(VERSION) -X main.BuildTime=$(BUILD_TIME) -X main.GitCommit=$(GIT_COMMIT)
 
-# 默认目标
+# Default target
 help:
 	@echo "ToughRADIUS v9 Makefile Commands"
 	@echo "================================="
 	@echo "Development:"
-	@echo "  make runs       - 启动后端服务 (支持 SQLite)"
-	@echo "  make runf       - 启动前端开发服务"
-	@echo "  make dev        - 同时启动前后端服务"
-	@echo "  make killfs     - 停止前后端所有服务"
+	@echo "  make runs       - Start backend service (supports SQLite)"
+	@echo "  make runf       - Start frontend dev server"
+	@echo "  make dev        - Start frontend and backend together"
+	@echo "  make killfs     - Stop all frontend and backend services"
 	@echo ""
 	@echo "Build:"
-	@echo "  make build      - 构建完整版本 (前端+后端，推荐)"
-	@echo "  make buildf     - 仅构建前端"
-	@echo "  make build-backend - 仅构建后端（假设前端已构建）"
+	@echo "  make build      - Build full release (frontend + backend, recommended)"
+	@echo "  make buildf     - Build frontend only"
+	@echo "  make build-backend - Build backend only (assumes frontend is built)"
 	@echo ""
 	@echo "Quality:"
-	@echo "  make test       - 运行测试"
-	@echo "  make test-eap-acceptance-docker - 在 Linux 容器中运行外部 EAP 验收测试"
-	@echo "  make lint       - 运行代码检查"
-	@echo "  make ci         - 运行完整 CI 检查（本地）"
-	@echo "  make setup-hooks - 安装 Git hooks"
+	@echo "  make test       - Run tests"
+	@echo "  make test-eap-acceptance-docker - Run external EAP acceptance tests in a Linux container"
+	@echo "  make lint       - Run lint"
+	@echo "  make ci         - Run full CI checks (local)"
+	@echo "  make setup-hooks - Install Git hooks"
 	@echo ""
 	@echo "Database:"
-	@echo "  make initdb     - 初始化数据库（危险操作，会删除所有数据）"
+	@echo "  make initdb     - Initialize database (dangerous: deletes all data)"
 	@echo ""
 	@echo "Maintenance:"
-	@echo "  make clean      - 清理构建文件"
+	@echo "  make clean      - Clean build files"
 	@echo ""
 
-# 启动后端服务（开发模式，支持 SQLite）
+# Start backend service (dev mode, SQLite supported)
 runs:
-	@echo "🚀 启动 ToughRADIUS 后端服务..."
-	@echo "📝 配置文件: toughradius.yml"
-	@echo "🔧 SQLite 支持: 已启用 (CGO_ENABLED=0)"
+	@echo "🚀 Starting Radius Auth Simulator backend..."
+	@echo "📝 Config file: toughradius.yml"
+	@echo "🔧 SQLite support: enabled (CGO_ENABLED=0)"
 	@echo ""
 	CGO_ENABLED=0 go run main.go -c toughradius.yml
 
-# 启动前端开发服务
+# Start frontend dev server
 runf:
-	@echo "🎨 启动前端开发服务..."
-	@echo "📂 工作目录: web/"
-	@echo "🌐 访问地址: http://localhost:3000/admin"
+	@echo "🎨 Start frontend dev server..."
+	@echo "📂 Working directory: web/"
+	@echo "🌐 URL: http://localhost:3000/admin"
 	@echo ""
 	cd web && npm run dev
 
-# 同时启动前后端（需要 tmux 或在不同终端运行）
+# Start frontend and backend (needs tmux or two terminals)
 dev:
-	@echo "⚠️  请在两个不同的终端窗口运行："
-	@echo "   终端1: make runs"
-	@echo "   终端2: make runf"
+	@echo "⚠️  Run these in two separate terminals:"
+	@echo "   Terminal 1: make runs"
+	@echo "   Terminal 2: make runf"
 	@echo ""
-	@echo "或使用以下命令在后台运行："
+	@echo "Or run them in the background:"
 	@echo "   make runs > /tmp/toughradius-backend.log 2>&1 &"
 	@echo "   make runf > /tmp/toughradius-frontend.log 2>&1 &"
 
-# 构建生产版本（静态编译，支持 PostgreSQL 和 SQLite）
+# Build production release (static, supports PostgreSQL and SQLite)
 build: buildf
 	@echo ""
-	@echo "🔨 构建后端生产版本..."
+	@echo "🔨 Building backend production release..."
 	@echo "📦 Version: $(VERSION)"
 	@echo "🕐 Build Time: $(BUILD_TIME)"
 	@echo "📝 Git Commit: $(GIT_COMMIT)"
 	@echo "⚠️  Static build (CGO_ENABLED=0)"
 	@echo ""
-	@echo "🔍 验证前端构建..."
-	@test -f web/dist/admin/index.html || (echo "❌ 错误: web/dist/admin/index.html 不存在！" && exit 1)
-	@test -d web/dist/admin/assets || (echo "❌ 错误: web/dist/admin/assets 目录不存在！" && exit 1)
+	@echo "🔍 Checking frontend build..."
+	@test -f web/dist/admin/index.html || (echo "❌ Error: web/dist/admin/index.html does not exist!" && exit 1)
+	@test -d web/dist/admin/assets || (echo "❌ Error: web/dist/admin/assets directory does not exist!" && exit 1)
 	@ASSET_COUNT=$$(find web/dist/admin/assets -type f 2>/dev/null | wc -l | tr -d ' '); \
 	if [ "$$ASSET_COUNT" -lt 1 ]; then \
-		echo "❌ 错误: web/dist/admin/assets 中没有文件！"; \
+		echo "❌ Error: web/dist/admin/assets is empty!"; \
 		exit 1; \
 	fi; \
-	echo "✅ 前端验证通过 ($$ASSET_COUNT 个资源文件)"
+	echo "✅ Frontend check passed ($$ASSET_COUNT asset files)"
 	@echo ""
 	@mkdir -p release
 	CGO_ENABLED=0 go build -ldflags "$(LDFLAGS)" -o release/toughradius main.go
 	@echo ""
 	@SIZE=$$(ls -lh release/toughradius | awk '{print $$5}'); \
-	echo "✅ 构建完成: release/toughradius ($$SIZE)"
-	@echo "📁 前端已嵌入二进制文件"
+	echo "✅ Build complete: release/toughradius ($$SIZE)"
+	@echo "📁 Frontend embedded in binary"
 
-# 仅构建后端（不重新构建前端，假设前端已存在）
+# Build backend only (no frontend rebuild; assumes it exists)
 build-backend:
-	@echo "🔨 仅构建后端（跳过前端构建）..."
+	@echo "🔨 Building backend only (skipping frontend)..."
 	@echo "📦 Version: $(VERSION)"
 	@echo "🕐 Build Time: $(BUILD_TIME)"
 	@echo "📝 Git Commit: $(GIT_COMMIT)"
 	@if [ ! -f web/dist/admin/index.html ]; then \
-		echo "⚠️  警告: 前端未构建，正在构建..."; \
+		echo "⚠️  Warning: frontend not built, building now..."; \
 		$(MAKE) buildf; \
 	fi
 	@mkdir -p release
 	CGO_ENABLED=0 go build -ldflags "$(LDFLAGS)" -o release/toughradius main.go
 	@SIZE=$$(ls -lh release/toughradius | awk '{print $$5}'); \
-	echo "✅ 构建完成: release/toughradius ($$SIZE)"
+	echo "✅ Build complete: release/toughradius ($$SIZE)"
 
 # Build macOS binaries (Apple Silicon + Intel). Pure Go, no CGO, so this
 # cross-compiles from Linux too. On a Mac with lipo, also emits a universal binary.
@@ -116,55 +116,55 @@ build-macos:
 		echo "Universal binary: release/radius-simulator-darwin-universal"; \
 	fi
 
-# 显示版本信息
+# Show version info
 version:
 	@echo "Version:    $(VERSION)"
 	@echo "Build Time: $(BUILD_TIME)"
 	@echo "Git Commit: $(GIT_COMMIT)"
 
-# 构建前端生产版本
+# Build frontend production bundle
 buildf:
-	@echo "🎨 构建前端生产版本..."
+	@echo "🎨 Build frontend production bundle..."
 	@if [ ! -d web/node_modules ]; then \
-		echo "📦 安装前端依赖..."; \
+		echo "📦 Install frontend dependencies..."; \
 		cd web && npm ci; \
 	fi
-	@echo "🔍 运行 TypeScript 类型检查..."
+	@echo "🔍 Running TypeScript type check..."
 	@cd web && npm run type-check
-	@echo "🏗️  编译前端资源..."
+	@echo "🏗️  Compiling frontend assets..."
 	@cd web && npm run build
 	@echo ""
 	@ASSET_COUNT=$$(find web/dist/admin/assets -type f 2>/dev/null | wc -l | tr -d ' '); \
-	echo "✅ 前端构建完成: web/dist/admin/ ($$ASSET_COUNT 个资源文件)"
+	echo "✅ Frontend build complete: web/dist/admin/ ($$ASSET_COUNT asset files)"
 	@ls -lh web/dist/admin/index.html web/dist/admin/assets/*.js 2>/dev/null | head -5
 
-# 初始化数据库（危险操作）
+# Initialize database (dangerous)
 initdb:
-	@echo "⚠️  警告：此操作将删除并重建所有数据库表！"
-	@read -p "确认继续？(yes/no): " confirm && [ "$$confirm" = "yes" ] || (echo "已取消"; exit 1)
-	@echo "🗄️  初始化数据库..."
+	@echo "⚠️  Warning: this drops and recreates all database tables!"
+	@read -p "Continue?(yes/no): " confirm && [ "$$confirm" = "yes" ] || (echo "Cancelled"; exit 1)
+	@echo "🗄️  Initializing database..."
 	CGO_ENABLED=0 go run main.go -initdb -c toughradius.yml
 
-# 运行测试
+# Run tests
 test:
-	@echo "🧪 运行测试..."
+	@echo "🧪 Run tests..."
 	CGO_ENABLED=0 go test ./...
 
-# 运行集成测试
+# Run integration tests
 test-integration:
-	@echo "🧪 运行集成测试..."
+	@echo "🧪 Run integration tests..."
 	CGO_ENABLED=0 go test -v ./internal/radiusd/... -run TestRadiusIntegration
 
-# 运行基于容器 PostgreSQL / OpenLDAP 的集成测试（真实外部依赖）
-# 自动拉起 docker-compose.test.yml 中的服务，运行 //go:build integration 套件，最后清理。
+# Run integration tests against containerized PostgreSQL / OpenLDAP (real external dependencies)
+# Starts the services in docker-compose.test.yml, runs the //go:build integration suite, then cleans up.
 test-integration-pg:
-	@echo "🐘 启动 PostgreSQL / OpenLDAP 测试容器并运行集成测试..."
+	@echo "🐘 Starting PostgreSQL / OpenLDAP test containers and running integration tests..."
 	@set -e; \
 	COMPOSE="docker compose -p toughradius-it -f docker-compose.test.yml"; \
-	cleanup() { echo "🧹 清理测试容器..."; $$COMPOSE down -v >/dev/null 2>&1 || true; }; \
+	cleanup() { echo "🧹 Clean up test containers..."; $$COMPOSE down -v >/dev/null 2>&1 || true; }; \
 	trap cleanup EXIT; \
 	$$COMPOSE up -d; \
-	echo "⏳ 等待服务健康检查..."; \
+	echo "⏳ Waiting for service health checks..."; \
 	for i in $$(seq 1 30); do \
 		unhealthy=$$($$COMPOSE ps --format '{{.Health}}' 2>/dev/null | grep -vc '^healthy$$' || true); \
 		[ "$$unhealthy" = "0" ] && break; \
@@ -172,7 +172,7 @@ test-integration-pg:
 	done; \
 	if [ "$$unhealthy" != "0" ]; then \
 		$$COMPOSE ps; \
-		echo "测试依赖服务未全部健康"; \
+		echo "Not all test dependencies are healthy"; \
 		exit 1; \
 	fi; \
 	TEST_DATABASE_HOST=127.0.0.1 \
@@ -191,17 +191,17 @@ test-integration-pg:
 	INTEGRATION_REQUIRED=1 \
 	CGO_ENABLED=0 go test -tags=integration -count=1 -v ./test/integration/...
 
-# 在 Linux 容器中运行外部 eapol_test EAP 验收测试，适合 macOS 本地复现 CI 路径。
-# 该目标不会更新 docs/reports；本地 JSON、日志和报告写入 build/eap-acceptance/。
+# Run external eapol_test EAP acceptance tests in a Linux container; useful to reproduce CI on macOS.
+# This target does not update docs/reports; local JSON, logs and reports go to build/eap-acceptance/.
 test-eap-acceptance-docker:
-	@echo "🔐 在 Linux 容器中运行 EAP 外部验收测试..."
+	@echo "🔐 Running external EAP acceptance tests in a Linux container..."
 	@set -e; \
 	COMPOSE="docker compose -p toughradius-it -f docker-compose.test.yml"; \
 	NETWORK="toughradius-it_default"; \
-	cleanup() { echo "🧹 清理测试容器..."; $$COMPOSE down -v >/dev/null 2>&1 || true; }; \
+	cleanup() { echo "🧹 Clean up test containers..."; $$COMPOSE down -v >/dev/null 2>&1 || true; }; \
 	trap cleanup EXIT; \
 	$$COMPOSE up -d; \
-	echo "⏳ 等待 Postgres 健康检查..."; \
+	echo "⏳ Waiting for Postgres health check..."; \
 	for i in $$(seq 1 30); do \
 		status=$$($$COMPOSE ps --format '{{.Health}}' 2>/dev/null || true); \
 		[ "$$status" = "healthy" ] && break; \
@@ -233,12 +233,12 @@ test-eap-acceptance-docker:
 			-date "$$(date -u +%F)" \
 			-retention 3; \
 	fi; \
-	echo "✅ EAP 验收输出: build/eap-acceptance/"; \
+	echo "✅ EAP Acceptance output: build/eap-acceptance/"; \
 	exit $$test_status
 
-# 代码检查
+# Lint
 lint:
-	@echo "🔍 运行代码检查..."
+	@echo "🔍 Run lint..."
 	@echo ""
 	@echo "📝 Checking code formatting..."
 	@UNFORMATTED=$$(gofmt -l . 2>/dev/null | grep -v vendor || true); \
@@ -264,14 +264,14 @@ lint:
 	@echo ""
 	@echo "✅ Lint checks completed"
 
-# 本地 CI 检查（模拟 GitHub Actions）
+# Local CI checks (mirrors GitHub Actions)
 ci: lint test build
 	@echo ""
 	@echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 	@echo "✅ All CI checks passed!"
 	@echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
-# 安装 Git hooks
+# Install Git hooks
 setup-hooks:
 	@echo "🔧 Setting up Git hooks..."
 	@chmod +x .githooks/pre-commit .githooks/pre-push
@@ -279,67 +279,67 @@ setup-hooks:
 	@echo "✅ Git hooks installed!"
 	@echo ""
 	@echo "📋 Installed hooks:"
-	@echo "   • pre-commit: 格式检查、go vet、快速构建"
-	@echo "   • pre-push:   完整测试、lint、构建验证"
+	@echo "   • pre-commit: format check, go vet, quick build"
+	@echo "   • pre-push:   full tests, lint, build check"
 	@echo ""
 	@echo "💡 To disable hooks temporarily:"
 	@echo "   git commit --no-verify"
 	@echo "   git push --no-verify"
 
-# 清理构建文件
+# Clean build files
 clean:
-	@echo "🧹 清理构建文件..."
+	@echo "🧹 Clean build files..."
 	rm -rf release/
 	rm -rf web/dist/
 	rm -f /tmp/toughradius-test
-	@echo "✅ 清理完成"
+	@echo "✅ Clean complete"
 
-# 安装前端依赖
+# Install frontend dependencies
 install-frontend:
-	@echo "📦 安装前端依赖..."
+	@echo "📦 Install frontend dependencies..."
 	cd web && npm install
 
-# 检查代码格式
+# Check code formatting
 fmt:
-	@echo "📝 格式化 Go 代码..."
+	@echo "📝 Formatting Go code..."
 	go fmt ./...
-	@echo "📝 格式化前端代码..."
-	cd web && npm run format || echo "提示: 如需格式化前端代码，请在 package.json 中添加 format 脚本"
+	@echo "📝 Formatting frontend code..."
+	cd web && npm run format || echo "Tip: add a format script to package.json to format frontend code"
 
-# 查看后端日志
+# View backend logs
 logs:
 	@tail -f /tmp/toughradius.log
 
-# 查看前端日志
+# View frontend logs
 logsf:
 	@tail -f /tmp/frontend.log
 
-# 停止前后端所有服务
+# Stop all frontend and backend services
 killfs:
-	@echo "🛑 停止前后端所有服务..."
+	@echo "🛑 Stop all frontend and backend services..."
 	@pkill -f "go run main.go" 2>/dev/null || true
 	@pkill -f "toughradius" 2>/dev/null || true
 	@pkill -f "vite" 2>/dev/null || true
 	@pkill -f "npm run dev" 2>/dev/null || true
-	@echo "✅ 所有服务已停止"
+	@echo "✅ All services stopped"
 
-# 重启后端服务
+# Restart backend service
 restart-backend: killfs
-	@echo "🔄 重启后端服务..."
+	@echo "🔄 Restart backend service..."
 	@make runs
 
-# 快速启动（后台运行前后端）
+# Quick start (frontend and backend in background)
 quick-start: killfs
-	@echo "🚀 快速启动前后端服务（后台运行）..."
+	@echo "🚀 Quick-starting frontend and backend (background)..."
 	@make runs > /tmp/toughradius-backend.log 2>&1 &
 	@sleep 3
 	@make runf > /tmp/toughradius-frontend.log 2>&1 &
 	@sleep 2
 	@echo ""
-	@echo "✅ 服务已启动！"
-	@echo "📊 后端: http://localhost:1816"
-	@echo "🎨 前端: http://localhost:3000/admin"
-	@echo "📝 后端日志: tail -f /tmp/toughradius-backend.log"
-	@echo "📝 前端日志: tail -f /tmp/toughradius-frontend.log"
+	@echo "✅ Services started!"
+	@echo "📊 Backend: http://localhost:1816"
+	@echo "🎨 Frontend: http://localhost:3000/admin"
+	@echo "📝 Backend log: tail -f /tmp/toughradius-backend.log"
+	@echo "📝 Frontend log: tail -f /tmp/toughradius-frontend.log"
 	@echo ""
-	@echo "🛑 停止服务: make killfs"
+	@echo "🛑 Stop services: make killfs"

@@ -11,7 +11,7 @@ import { LoginPage } from './pages/LoginPage';
 import { CustomLayout, CustomError } from './components';
 import { theme, darkTheme } from './theme';
 
-// 自定义加载组件，避免闪烁
+// Custom loading component to avoid flicker
 const CustomLoading = () => (
   <Box
     sx={{
@@ -26,12 +26,12 @@ const CustomLoading = () => (
   >
     <CircularProgress size={40} sx={{ color: '#2563eb' }} />
     <Typography variant="body1" color="text.secondary" sx={{ color: '#64748b' }}>
-      正在加载...
+      Loading...
     </Typography>
   </Box>
 );
 
-// 导入资源组件
+// Import resource components
 import {
   RadiusUserList,
   RadiusUserEdit,
@@ -88,7 +88,7 @@ const App = () => (
     error={CustomError}
     requireAuth
   >
-    {/* RADIUS 用户管理 */}
+    {/* RADIUS Users */}
     <Resource
       name="radius/users"
       list={RadiusUserList}
@@ -97,21 +97,21 @@ const App = () => (
       show={RadiusUserShow}
     />
 
-    {/* 在线会话 */}
+    {/* Online Sessions */}
     <Resource
       name="radius/online"
       list={OnlineSessionList}
       show={OnlineSessionShow}
     />
 
-    {/* 计费记录 */}
+    {/* Accounting Records */}
     <Resource
       name="radius/accounting"
       list={AccountingList}
       show={AccountingShow}
     />
 
-    {/* RADIUS 配置 */}
+    {/* RADIUS Settings */}
     <Resource
       name="radius/profiles"
       list={RadiusProfileList}
@@ -120,7 +120,7 @@ const App = () => (
       show={RadiusProfileShow}
     />
 
-    {/* NAS 设备管理 */}
+    {/* NAS NAS Devices */}
     <Resource
       name="network/nas"
       list={NASList}
@@ -129,7 +129,7 @@ const App = () => (
       show={NASShow}
     />
 
-    {/* 网络节点 */}
+    {/* Network Nodes */}
     <Resource
       name="network/nodes"
       list={NodeList}
@@ -138,7 +138,7 @@ const App = () => (
       show={NodeShow}
     />
 
-    {/* 操作员管理 */}
+    {/* Operators */}
     <Resource
       name="system/operators"
       list={OperatorList}
@@ -147,7 +147,7 @@ const App = () => (
       show={OperatorShow}
     />
 
-    {/* 证书管理 */}
+    {/* Certificates */}
     <Resource
       name="system/certificate"
       list={CertificateList}
@@ -157,7 +157,7 @@ const App = () => (
       icon={CertificateIcon}
     />
 
-    {/* 自定义路由 */}
+    {/* Custom routes */}
     <CustomRoutes>
       <Route path="/account/settings" element={<AccountSettings />} />
       <Route path="/system/config" element={<SystemConfigPage />} />

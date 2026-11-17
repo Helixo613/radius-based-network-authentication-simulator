@@ -1,7 +1,5 @@
 # Documentation Map
 
-> 中文版本：[文档地图](../zh/documentation-map.md)
-
 This handbook is being assembled incrementally. The first table lists the
 handbook's own chapters; the second points to documents that still live
 elsewhere in the repository, so everything is reachable from a single place.

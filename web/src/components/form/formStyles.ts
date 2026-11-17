@@ -1,8 +1,8 @@
 import { Theme } from '@mui/material/styles';
 
 /**
- * 控件包装器样式
- * 为表单控件（如 BooleanInput）提供一致的边框和内边距
+ * Control wrapper styles
+ * Consistent border and padding for form controls (e.g. BooleanInput)
  */
 export const controlWrapperSx = {
   border: (theme: Theme) => `1px solid ${theme.palette.divider}`,
@@ -23,8 +23,8 @@ export const controlWrapperSx = {
 };
 
 /**
- * 表单全宽布局样式
- * 使表单内容充满整个容器宽度
+ * Full-width form layout styles
+ * Make form content fill the container width
  */
 export const formLayoutSx = {
   width: '100%',

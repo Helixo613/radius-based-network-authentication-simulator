@@ -26,16 +26,16 @@ else
         # If so, use the previous tag as the starting point
         prev_tag=$(git tag --sort=-version:refname | sed -n '2p')
         if [ -n "$prev_tag" ]; then
-            echo "📋  $prev_tag —— $latest_tag "
+            echo "📋  $prev_tag - $latest_tag "
             commit_range="$prev_tag..$latest_tag"
             version_info="$prev_tag → $latest_tag"
         else
-            echo "📋 —— $latest_tag"
+            echo "📋 - $latest_tag"
             commit_range="$latest_tag"
             version_info="Initial commit → $latest_tag"
         fi
     else
-        echo "📋 $latest_tag —— "
+        echo "📋 $latest_tag - "
         commit_range="$latest_tag..HEAD"
         version_info="$latest_tag → HEAD"
     fi
@@ -76,15 +76,15 @@ git log $commit_range --format='%h|%s|%an|%ad' --date=short 2>/dev/null | {
         line="   • $hash $subject ($author, $date)"
         
         case "$subject" in
-            feat*|feature*|新增*|添加*|增加*)
+            feat*|feature*|Add*|add*|New*)
                 feat_commits="$feat_commits$line\n"
                 feat_count=$((feat_count + 1))
             ;;
-            fix*|修复*|修正*|bugfix*)
+            fix*|Fix*|bugfix*)
                 fix_commits="$fix_commits$line\n"
                 fix_count=$((fix_count + 1))
             ;;
-            refactor*|重构*|优化*)
+            refactor*|Refactor*|Optimize*)
                 refactor_commits="$refactor_commits$line\n"
                 refactor_count=$((refactor_count + 1))
             ;;

@@ -35,7 +35,7 @@ const buildApiUrl = (resource: string, suffix = '') =>
 
 const baseDataProvider = simpleRestProvider(API_BASE, httpClient);
 
-// 自定义 dataProvider 以适配后端 API 格式
+// Custom dataProvider adapting to the backend API format
 export const dataProvider: DataProvider = {
   ...baseDataProvider,
   

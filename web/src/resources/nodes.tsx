@@ -73,7 +73,7 @@ import {
 
 const LARGE_LIST_PER_PAGE = 50;
 
-// ============ 类型定义 ============
+// ============ Type definitions ============
 
 interface NetworkNode extends RaRecord {
   name?: string;
@@ -83,7 +83,7 @@ interface NetworkNode extends RaRecord {
   updated_at?: string;
 }
 
-// ============ 工具函数 ============
+// ============ Utility functions ============
 
 const formatTimestamp = (value?: string | number): string => {
   if (!value) {
@@ -96,11 +96,11 @@ const formatTimestamp = (value?: string | number): string => {
   return date.toLocaleString();
 };
 
-// ============ 列表加载骨架屏 ============
+// ============ List loading skeleton ============
 
 const NodeListSkeleton = ({ rows = 10 }: { rows?: number }) => (
   <Box sx={{ width: '100%' }}>
-    {/* 搜索区域骨架屏 */}
+    {/* Search area skeleton */}
     <Card
       elevation={0}
       sx={{
@@ -132,7 +132,7 @@ const NodeListSkeleton = ({ rows = 10 }: { rows?: number }) => (
       </CardContent>
     </Card>
 
-    {/* 表格骨架屏 */}
+    {/* Table skeleton */}
     <Card
       elevation={0}
       sx={{
@@ -141,7 +141,7 @@ const NodeListSkeleton = ({ rows = 10 }: { rows?: number }) => (
         overflow: 'hidden',
       }}
     >
-      {/* 表头 */}
+      {/* Table header */}
       <Box
         sx={{
           display: 'grid',
@@ -158,7 +158,7 @@ const NodeListSkeleton = ({ rows = 10 }: { rows?: number }) => (
         ))}
       </Box>
 
-      {/* 表格行 */}
+      {/* Table rows */}
       {[...Array(rows)].map((_, rowIndex) => (
         <Box
           key={rowIndex}
@@ -181,7 +181,7 @@ const NodeListSkeleton = ({ rows = 10 }: { rows?: number }) => (
         </Box>
       ))}
 
-      {/* 分页骨架屏 */}
+      {/* Pagination skeleton */}
       <Box
         sx={{
           display: 'flex',
@@ -201,7 +201,7 @@ const NodeListSkeleton = ({ rows = 10 }: { rows?: number }) => (
   </Box>
 );
 
-// ============ 空状态组件 ============
+// ============ Empty state component ============
 
 const NodeEmptyState = () => {
   const translate = useTranslate();
@@ -218,16 +218,16 @@ const NodeEmptyState = () => {
     >
       <NodeIcon sx={{ fontSize: 64, opacity: 0.3, mb: 2 }} />
       <Typography variant="h6" sx={{ opacity: 0.6, mb: 1 }}>
-        {translate('resources.network/nodes.empty.title', { _: '暂无节点' })}
+        {translate('resources.network/nodes.empty.title', { _: 'No nodes' })}
       </Typography>
       <Typography variant="body2" sx={{ opacity: 0.5 }}>
-        {translate('resources.network/nodes.empty.description', { _: '点击"新建"按钮添加第一个网络节点' })}
+        {translate('resources.network/nodes.empty.description', { _: 'Click "Create" to add the first network node' })}
       </Typography>
     </Box>
   );
 };
 
-// ============ 搜索表头区块组件 ============
+// ============ Search header section component ============
 
 const NodeSearchHeaderCard = () => {
   const translate = useTranslate();
@@ -278,8 +278,8 @@ const NodeSearchHeaderCard = () => {
   );
 
   const filterFields = [
-    { key: 'name', label: translate('resources.network/nodes.fields.name', { _: '节点名称' }) },
-    { key: 'tags', label: translate('resources.network/nodes.fields.tags', { _: '标签' }) },
+    { key: 'name', label: translate('resources.network/nodes.fields.name', { _: 'Node Name' }) },
+    { key: 'tags', label: translate('resources.network/nodes.fields.tags', { _: 'Tags' }) },
   ];
 
   return (
@@ -306,7 +306,7 @@ const NodeSearchHeaderCard = () => {
       >
         <FilterIcon sx={{ color: 'primary.main', fontSize: 20 }} />
         <Typography variant="subtitle2" sx={{ fontWeight: 600, color: 'text.primary' }}>
-          {translate('resources.network/nodes.filter.title', { _: '筛选条件' })}
+          {translate('resources.network/nodes.filter.title', { _: 'Filters' })}
         </Typography>
       </Box>
 
@@ -340,9 +340,9 @@ const NodeSearchHeaderCard = () => {
             />
           ))}
 
-          {/* 操作按钮 */}
+          {/* Action buttons */}
           <Box sx={{ display: 'flex', gap: 0.5, justifyContent: 'flex-end' }}>
-            <Tooltip title={translate('ra.action.clear_filters', { _: '清除筛选' })}>
+            <Tooltip title={translate('ra.action.clear_filters', { _: 'Clear filters' })}>
               <IconButton
                 onClick={handleClear}
                 size="small"
@@ -356,7 +356,7 @@ const NodeSearchHeaderCard = () => {
                 <ClearIcon />
               </IconButton>
             </Tooltip>
-            <Tooltip title={translate('ra.action.search', { _: '搜索' })}>
+            <Tooltip title={translate('ra.action.search', { _: 'Search' })}>
               <IconButton
                 onClick={handleSearch}
                 color="primary"
@@ -377,7 +377,7 @@ const NodeSearchHeaderCard = () => {
   );
 };
 
-// ============ 增强版字段组件 ============
+// ============ Enhanced field component ============
 
 const NodeNameField = () => {
   const record = useRecordContext<NetworkNode>();
@@ -434,7 +434,7 @@ const TagsField = () => {
   );
 };
 
-// ============ 表单工具栏 ============
+// ============ Form toolbar ============
 
 const NodeFormToolbar = (props: ToolbarProps) => (
   <Toolbar {...props}>
@@ -443,7 +443,7 @@ const NodeFormToolbar = (props: ToolbarProps) => (
   </Toolbar>
 );
 
-// ============ 列表操作栏组件 ============
+// ============ List actions bar component ============
 
 const NodeListActions = () => {
   const translate = useTranslate();
@@ -451,7 +451,7 @@ const NodeListActions = () => {
     <TopToolbar>
       <SortButton
         fields={['created_at', 'name']}
-        label={translate('ra.action.sort', { _: '排序' })}
+        label={translate('ra.action.sort', { _: 'Sort' })}
       />
       <CreateButton />
       <ExportButton />
@@ -459,7 +459,7 @@ const NodeListActions = () => {
   );
 };
 
-// ============ 内部列表内容组件 ============
+// ============ Inner list content component ============
 
 const NodeListContent = () => {
   const translate = useTranslate();
@@ -469,8 +469,8 @@ const NodeListContent = () => {
 
   const fieldLabels = useMemo(
     () => ({
-      name: translate('resources.network/nodes.fields.name', { _: '节点名称' }),
-      tags: translate('resources.network/nodes.fields.tags', { _: '标签' }),
+      name: translate('resources.network/nodes.fields.name', { _: 'Node Name' }),
+      tags: translate('resources.network/nodes.fields.tags', { _: 'Tags' }),
     }),
     [translate],
   );
@@ -498,13 +498,13 @@ const NodeListContent = () => {
 
   return (
     <Box>
-      {/* 搜索区块 */}
+      {/* Search section */}
       <NodeSearchHeaderCard />
 
-      {/* 活动筛选标签 */}
+      {/* Active filter tags */}
       <ActiveFilters fieldLabels={fieldLabels} />
 
-      {/* 表格容器 */}
+      {/* Table container */}
       <Card
         elevation={0}
         sx={{
@@ -513,7 +513,7 @@ const NodeListContent = () => {
           overflow: 'hidden',
         }}
       >
-        {/* 表格统计信息 */}
+        {/* Table statistics */}
         <Box
           sx={{
             px: 2,
@@ -527,11 +527,11 @@ const NodeListContent = () => {
           }}
         >
           <Typography variant="body2" color="text.secondary">
-            共 <strong>{total?.toLocaleString() || 0}</strong> 个节点
+            Total <strong>{total?.toLocaleString() || 0}</strong> nodes
           </Typography>
         </Box>
 
-        {/* 响应式表格 */}
+        {/* Responsive table */}
         <Box
           sx={{
             overflowX: 'auto',
@@ -582,26 +582,26 @@ const NodeListContent = () => {
           <Datagrid rowClick="show" bulkActionButtons={false}>
             <FunctionField
               source="name"
-              label={translate('resources.network/nodes.fields.name', { _: '节点名称' })}
+              label={translate('resources.network/nodes.fields.name', { _: 'Node Name' })}
               render={() => <NodeNameField />}
             />
             <FunctionField
               source="tags"
-              label={translate('resources.network/nodes.fields.tags', { _: '标签' })}
+              label={translate('resources.network/nodes.fields.tags', { _: 'Tags' })}
               render={() => <TagsField />}
             />
             <TextField
               source="remark"
-              label={translate('resources.network/nodes.fields.remark', { _: '备注' })}
+              label={translate('resources.network/nodes.fields.remark', { _: 'Remark' })}
             />
             <DateField
               source="created_at"
-              label={translate('resources.network/nodes.fields.created_at', { _: '创建时间' })}
+              label={translate('resources.network/nodes.fields.created_at', { _: 'Created At' })}
               showTime
             />
             <DateField
               source="updated_at"
-              label={translate('resources.network/nodes.fields.updated_at', { _: '更新时间' })}
+              label={translate('resources.network/nodes.fields.updated_at', { _: 'Updated At' })}
               showTime
             />
           </Datagrid>
@@ -611,7 +611,7 @@ const NodeListContent = () => {
   );
 };
 
-// 网络节点列表
+// Network node list
 export const NodeList = () => {
   return (
     <List
@@ -626,7 +626,7 @@ export const NodeList = () => {
   );
 };
 
-// ============ 编辑页面 ============
+// ============ Edit page ============
 
 export const NodeEdit = () => {
   const translate = useTranslate();
@@ -635,16 +635,16 @@ export const NodeEdit = () => {
     <Edit>
       <SimpleForm toolbar={<NodeFormToolbar />} sx={formLayoutSx}>
         <FormSection
-          title={translate('resources.network/nodes.sections.basic', { _: '基本信息' })}
-          description={translate('resources.network/nodes.sections.basic_desc', { _: '节点的基本配置信息' })}
+          title={translate('resources.network/nodes.sections.basic', { _: 'Basic Info' })}
+          description={translate('resources.network/nodes.sections.basic_desc', { _: 'Basic node settings' })}
         >
           <FieldGrid columns={{ xs: 1, sm: 2 }}>
             <FieldGridItem>
               <TextInput
                 source="id"
                 disabled
-                label={translate('resources.network/nodes.fields.id', { _: '节点ID' })}
-                helperText={translate('resources.network/nodes.helpers.id', { _: '系统自动生成的唯一标识' })}
+                label={translate('resources.network/nodes.fields.id', { _: 'Node ID' })}
+                helperText={translate('resources.network/nodes.helpers.id', { _: 'Unique ID generated by the system' })}
                 fullWidth
                 size="small"
               />
@@ -652,9 +652,9 @@ export const NodeEdit = () => {
             <FieldGridItem>
               <TextInput
                 source="name"
-                label={translate('resources.network/nodes.fields.name', { _: '节点名称' })}
+                label={translate('resources.network/nodes.fields.name', { _: 'Node Name' })}
                 validate={[required(), minLength(1), maxLength(100)]}
-                helperText={translate('resources.network/nodes.helpers.name', { _: '1-100个字符的节点名称' })}
+                helperText={translate('resources.network/nodes.helpers.name', { _: '1-100 characters (node name)' })}
                 fullWidth
                 size="small"
               />
@@ -662,9 +662,9 @@ export const NodeEdit = () => {
             <FieldGridItem span={{ xs: 1, sm: 2 }}>
               <TextInput
                 source="tags"
-                label={translate('resources.network/nodes.fields.tags', { _: '标签' })}
+                label={translate('resources.network/nodes.fields.tags', { _: 'Tags' })}
                 validate={[maxLength(200)]}
-                helperText={translate('resources.network/nodes.helpers.tags', { _: '多个标签用逗号分隔' })}
+                helperText={translate('resources.network/nodes.helpers.tags', { _: 'Separate multiple tags with commas' })}
                 fullWidth
                 size="small"
               />
@@ -673,20 +673,20 @@ export const NodeEdit = () => {
         </FormSection>
 
         <FormSection
-          title={translate('resources.network/nodes.sections.remark', { _: '备注信息' })}
-          description={translate('resources.network/nodes.sections.remark_desc', { _: '额外的说明和备注' })}
+          title={translate('resources.network/nodes.sections.remark', { _: 'Remarks' })}
+          description={translate('resources.network/nodes.sections.remark_desc', { _: 'Additional notes and remarks' })}
         >
           <FieldGrid columns={{ xs: 1 }}>
             <FieldGridItem>
               <TextInput
                 source="remark"
-                label={translate('resources.network/nodes.fields.remark', { _: '备注' })}
+                label={translate('resources.network/nodes.fields.remark', { _: 'Remark' })}
                 validate={[maxLength(500)]}
                 multiline
                 minRows={3}
                 fullWidth
                 size="small"
-                helperText={translate('resources.network/nodes.helpers.remark', { _: '可选的备注信息，最多500个字符' })}
+                helperText={translate('resources.network/nodes.helpers.remark', { _: 'Optional remarks, max 500 characters' })}
               />
             </FieldGridItem>
           </FieldGrid>
@@ -696,7 +696,7 @@ export const NodeEdit = () => {
   );
 };
 
-// ============ 创建页面 ============
+// ============ Create page ============
 
 export const NodeCreate = () => {
   const translate = useTranslate();
@@ -705,16 +705,16 @@ export const NodeCreate = () => {
     <Create>
       <SimpleForm sx={formLayoutSx}>
         <FormSection
-          title={translate('resources.network/nodes.sections.basic', { _: '基本信息' })}
-          description={translate('resources.network/nodes.sections.basic_desc', { _: '节点的基本配置信息' })}
+          title={translate('resources.network/nodes.sections.basic', { _: 'Basic Info' })}
+          description={translate('resources.network/nodes.sections.basic_desc', { _: 'Basic node settings' })}
         >
           <FieldGrid columns={{ xs: 1, sm: 2 }}>
             <FieldGridItem>
               <TextInput
                 source="name"
-                label={translate('resources.network/nodes.fields.name', { _: '节点名称' })}
+                label={translate('resources.network/nodes.fields.name', { _: 'Node Name' })}
                 validate={[required(), minLength(1), maxLength(100)]}
-                helperText={translate('resources.network/nodes.helpers.name', { _: '1-100个字符的节点名称' })}
+                helperText={translate('resources.network/nodes.helpers.name', { _: '1-100 characters (node name)' })}
                 fullWidth
                 size="small"
               />
@@ -722,9 +722,9 @@ export const NodeCreate = () => {
             <FieldGridItem>
               <TextInput
                 source="tags"
-                label={translate('resources.network/nodes.fields.tags', { _: '标签' })}
+                label={translate('resources.network/nodes.fields.tags', { _: 'Tags' })}
                 validate={[maxLength(200)]}
-                helperText={translate('resources.network/nodes.helpers.tags', { _: '多个标签用逗号分隔' })}
+                helperText={translate('resources.network/nodes.helpers.tags', { _: 'Separate multiple tags with commas' })}
                 fullWidth
                 size="small"
               />
@@ -733,20 +733,20 @@ export const NodeCreate = () => {
         </FormSection>
 
         <FormSection
-          title={translate('resources.network/nodes.sections.remark', { _: '备注信息' })}
-          description={translate('resources.network/nodes.sections.remark_desc', { _: '额外的说明和备注' })}
+          title={translate('resources.network/nodes.sections.remark', { _: 'Remarks' })}
+          description={translate('resources.network/nodes.sections.remark_desc', { _: 'Additional notes and remarks' })}
         >
           <FieldGrid columns={{ xs: 1 }}>
             <FieldGridItem>
               <TextInput
                 source="remark"
-                label={translate('resources.network/nodes.fields.remark', { _: '备注' })}
+                label={translate('resources.network/nodes.fields.remark', { _: 'Remark' })}
                 validate={[maxLength(500)]}
                 multiline
                 minRows={3}
                 fullWidth
                 size="small"
-                helperText={translate('resources.network/nodes.helpers.remark', { _: '可选的备注信息，最多500个字符' })}
+                helperText={translate('resources.network/nodes.helpers.remark', { _: 'Optional remarks, max 500 characters' })}
               />
             </FieldGridItem>
           </FieldGrid>
@@ -756,7 +756,7 @@ export const NodeCreate = () => {
   );
 };
 
-// ============ 详情页顶部概览卡片 ============
+// ============ Detail page top overview card ============
 
 const NodeHeaderCard = () => {
   const record = useRecordContext<NetworkNode>();
@@ -766,12 +766,12 @@ const NodeHeaderCard = () => {
 
   const handleCopy = useCallback((text: string, label: string) => {
     navigator.clipboard.writeText(text);
-    notify(`${label} 已复制到剪贴板`, { type: 'info' });
+    notify(`${label} Copied to clipboard`, { type: 'info' });
   }, [notify]);
 
   const handleRefresh = useCallback(() => {
     refresh();
-    notify('数据已刷新', { type: 'info' });
+    notify('Data refreshed', { type: 'info' });
   }, [refresh, notify]);
 
   if (!record) return null;
@@ -792,7 +792,7 @@ const NodeHeaderCard = () => {
         position: 'relative',
       }}
     >
-      {/* 装饰背景 */}
+      {/* Decorative background */}
       <Box
         sx={{
           position: 'absolute',
@@ -808,7 +808,7 @@ const NodeHeaderCard = () => {
 
       <CardContent sx={{ p: 3, position: 'relative', zIndex: 1 }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 3 }}>
-          {/* 左侧：节点信息 */}
+          {/* Left: node info */}
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
             <Avatar
               sx={{
@@ -825,7 +825,7 @@ const NodeHeaderCard = () => {
             <Box>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.5 }}>
                 <Typography variant="h5" sx={{ fontWeight: 700, color: 'text.primary' }}>
-                  {record.name || <EmptyValue message="未知节点" />}
+                  {record.name || <EmptyValue message="Unknown node" />}
                 </Typography>
               </Box>
               {record.name && (
@@ -833,10 +833,10 @@ const NodeHeaderCard = () => {
                   <Typography variant="caption" color="text.secondary" sx={{ fontFamily: 'monospace' }}>
                     ID: {record.id}
                   </Typography>
-                  <Tooltip title="复制节点名称">
+                  <Tooltip title="Copy node name">
                     <IconButton
                       size="small"
-                      onClick={() => handleCopy(record.name!, '节点名称')}
+                      onClick={() => handleCopy(record.name!, 'Node Name')}
                       sx={{ p: 0.5 }}
                     >
                       <CopyIcon sx={{ fontSize: '0.75rem' }} />
@@ -847,9 +847,9 @@ const NodeHeaderCard = () => {
             </Box>
           </Box>
 
-          {/* 右侧：操作按钮 */}
+          {/* Right: action buttons */}
           <Box className="no-print" sx={{ display: 'flex', gap: 1 }}>
-            <Tooltip title="打印详情">
+            <Tooltip title="Print details">
               <IconButton
                 onClick={() => window.print()}
                 sx={{
@@ -862,7 +862,7 @@ const NodeHeaderCard = () => {
                 <PrintIcon />
               </IconButton>
             </Tooltip>
-            <Tooltip title="刷新数据">
+            <Tooltip title="Refresh data">
               <IconButton
                 onClick={handleRefresh}
                 sx={{
@@ -889,7 +889,7 @@ const NodeHeaderCard = () => {
           </Box>
         </Box>
 
-        {/* 快速信息 */}
+        {/* Quick info */}
         <Box
           sx={{
             display: 'grid',
@@ -911,7 +911,7 @@ const NodeHeaderCard = () => {
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
               <TagIcon sx={{ fontSize: '1.1rem', color: 'info.main' }} />
               <Typography variant="caption" color="text.secondary">
-                {translate('resources.network/nodes.fields.tags', { _: '标签' })}
+                {translate('resources.network/nodes.fields.tags', { _: 'Tags' })}
               </Typography>
             </Box>
             {tags.length > 0 ? (
@@ -943,7 +943,7 @@ const NodeHeaderCard = () => {
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
               <TimeIcon sx={{ fontSize: '1.1rem', color: 'success.main' }} />
               <Typography variant="caption" color="text.secondary">
-                {translate('resources.network/nodes.fields.created_at', { _: '创建时间' })}
+                {translate('resources.network/nodes.fields.created_at', { _: 'Created At' })}
               </Typography>
             </Box>
             <Typography variant="body2" sx={{ fontWeight: 600 }}>
@@ -956,7 +956,7 @@ const NodeHeaderCard = () => {
   );
 };
 
-// 打印样式
+// Print styles
 const printStyles = `
   @media print {
     body * {
@@ -978,7 +978,7 @@ const printStyles = `
   }
 `;
 
-// ============ 节点详情内容 ============
+// ============ Node detail content ============
 
 const NodeDetails = () => {
   const record = useRecordContext<NetworkNode>();
@@ -993,13 +993,13 @@ const NodeDetails = () => {
       <style>{printStyles}</style>
       <Box className="printable-content" sx={{ width: '100%', p: { xs: 2, sm: 3, md: 4 } }}>
         <Stack spacing={3}>
-          {/* 顶部概览卡片 */}
+          {/* Top overview card */}
           <NodeHeaderCard />
 
-          {/* 时间信息 */}
+          {/* Time Info */}
           <DetailSectionCard
-            title={translate('resources.network/nodes.sections.timing', { _: '时间信息' })}
-            description={translate('resources.network/nodes.sections.timing_desc', { _: '更新时间记录' })}
+            title={translate('resources.network/nodes.sections.timing', { _: 'Time Info' })}
+            description={translate('resources.network/nodes.sections.timing_desc', { _: 'Updated time record' })}
             icon={<TimeIcon />}
             color="info"
           >
@@ -1013,16 +1013,16 @@ const NodeDetails = () => {
               }}
             >
               <DetailItem
-                label={translate('resources.network/nodes.fields.updated_at', { _: '更新时间' })}
+                label={translate('resources.network/nodes.fields.updated_at', { _: 'Updated At' })}
                 value={formatTimestamp(record.updated_at)}
               />
             </Box>
           </DetailSectionCard>
 
-          {/* 备注信息 */}
+          {/* Remarks */}
           <DetailSectionCard
-            title={translate('resources.network/nodes.sections.remark', { _: '备注信息' })}
-            description={translate('resources.network/nodes.sections.remark_desc', { _: '额外的说明和备注' })}
+            title={translate('resources.network/nodes.sections.remark', { _: 'Remarks' })}
+            description={translate('resources.network/nodes.sections.remark_desc', { _: 'Additional notes and remarks' })}
             icon={<NoteIcon />}
             color="primary"
           >
@@ -1047,7 +1047,7 @@ const NodeDetails = () => {
                   fontStyle: record.remark ? 'normal' : 'italic',
                 }}
               >
-                {record.remark || translate('resources.network/nodes.empty.no_remark', { _: '无备注信息' })}
+                {record.remark || translate('resources.network/nodes.empty.no_remark', { _: 'No remarks' })}
               </Typography>
             </Box>
           </DetailSectionCard>
@@ -1057,7 +1057,7 @@ const NodeDetails = () => {
   );
 };
 
-// 网络节点详情
+// Network Node Details
 export const NodeShow = () => {
   return (
     <Show>

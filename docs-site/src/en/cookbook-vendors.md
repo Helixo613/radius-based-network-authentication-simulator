@@ -1,6 +1,5 @@
 # Cookbook: H3C, ZTE, iKuai & Cisco
 
-> 中文版本：[实战手册：H3C / 中兴 / 爱快 / Cisco](../zh/cookbook-vendors.md)
 >
 > This chapter is part of the [Scenario Cookbook](./cookbook.md) and follows its
 > [reading conventions](./cookbook.md#the-five-part-shape-of-every-scenario).
@@ -130,7 +129,7 @@ So a "30M down" tier (`30720` Kbps) is sent as `RP-Downstream-Speed-Limit =
 `Calling-Station-Id` (`-`→`:`), and **VLAN is not parsed** (always `0`). So **MAC
 binding works, but VLAN binding does not** (the VLAN check is always skipped).
 
-**Device side**: on the iKuai web console, go to **认证计费 → RADIUS 计费**, set
+**Device side**: on the iKuai web console, go to **Authentication & Billing → RADIUS Accounting**, set
 the server address, ports 1812 / 1813 and the shared secret, then enable RADIUS
 in the PPPoE server settings.
 

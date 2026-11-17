@@ -1,6 +1,6 @@
 [book]
-title = "ToughRADIUS Handbook"
-description = "Bilingual (English / 中文) handbook for the ToughRADIUS RADIUS server."
+title = "Radius Based Network Authentication Simulator Handbook"
+description = "Handbook for the Radius Based Network Authentication Simulator."
 authors = ["ToughRADIUS contributors"]
 language = "en"
 src = "src"
@@ -9,6 +9,3 @@ src = "src"
 default-theme = "rust"
 preferred-dark-theme = "ayu"
 git-repository-url = "https://github.com/talkincode/toughradius"
-# Menu-bar EN/中文 toggle (mdBook output only; GitBook uses per-chapter links).
-additional-css = ["assets/lang-toggle.css"]
-additional-js = ["assets/lang-toggle.js"]

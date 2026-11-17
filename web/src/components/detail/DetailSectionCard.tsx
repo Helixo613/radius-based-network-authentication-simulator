@@ -10,8 +10,8 @@ export interface DetailSectionCardProps {
 }
 
 /**
- * 详情分区卡片组件
- * 用于在详情页中将相关字段分组展示，带有图标和颜色主题
+ * Detail section card component
+ * Groups related fields on detail pages, with icon and color theme
  */
 export const DetailSectionCard = ({
   title,
