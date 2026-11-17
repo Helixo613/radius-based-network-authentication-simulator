@@ -21,7 +21,7 @@ Runs on **Linux and macOS** (Apple Silicon and Intel). Pure Go, no CGO, embedded
 # Prerequisites (Homebrew)
 brew install go node
 
-git clone https://github.com/<your-user>/radius-network-auth-simulator.git
+git clone https://github.com/Helixo613/radius-network-auth-simulator.git
 cd radius-network-auth-simulator
 
 # Build frontend + macOS binaries (arm64 + amd64, universal if lipo is present)
@@ -106,7 +106,7 @@ A pluggable EAP handler registry covers both challenge and tunneled methods:
 
 ```bash
 # Clone repository
-git clone https://github.com/<your-user>/radius-network-auth-simulator.git
+git clone https://github.com/Helixo613/radius-network-auth-simulator.git
 cd radius-network-auth-simulator
 
 # Build frontend
